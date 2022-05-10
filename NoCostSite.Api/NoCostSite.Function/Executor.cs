@@ -2,10 +2,9 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using NoCostSite.Api.Controllers;
 using NoCostSite.Utils;
 
-namespace NoCostSite.Api.Function
+namespace NoCostSite.Function
 {
     public class Executor
     {

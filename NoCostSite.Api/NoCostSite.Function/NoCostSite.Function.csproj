@@ -2,11 +2,9 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\NoCostSite.Function\NoCostSite.Function.csproj" />
       <ProjectReference Include="..\NoCostSite.Utils\NoCostSite.Utils.csproj" />
     </ItemGroup>
 

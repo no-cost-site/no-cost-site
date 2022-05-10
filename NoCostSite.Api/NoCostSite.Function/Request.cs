@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace NoCostSite.Api.Function
+namespace NoCostSite.Function
 {
     public class Request
     {

@@ -1,6 +1,4 @@
-using NoCostSite.Api.Function;
-
-namespace NoCostSite.Api.Controllers
+namespace NoCostSite.Function
 {
     public abstract class ControllerBase
     {

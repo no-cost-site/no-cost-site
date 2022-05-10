@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using NoCostSite.Utils;
 
-namespace NoCostSite.Api.Function
+namespace NoCostSite.Function
 {
     public class Response
     {

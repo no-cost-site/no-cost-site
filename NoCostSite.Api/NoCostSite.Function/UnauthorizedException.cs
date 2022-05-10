@@ -1,6 +1,6 @@
 using System;
 
-namespace NoCostSite.Api.Function
+namespace NoCostSite.Function
 {
     public class UnauthorizedException : Exception
     {

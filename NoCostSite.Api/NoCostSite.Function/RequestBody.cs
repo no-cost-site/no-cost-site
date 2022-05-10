@@ -1,4 +1,4 @@
-namespace NoCostSite.Api.Function
+namespace NoCostSite.Function
 {
     public class RequestBody
     {

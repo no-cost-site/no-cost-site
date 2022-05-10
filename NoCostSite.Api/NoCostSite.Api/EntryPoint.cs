@@ -1,4 +1,4 @@
-﻿using NoCostSite.Api.Function;
+﻿using NoCostSite.Function;
 
 namespace NoCostSite.Api
 {
