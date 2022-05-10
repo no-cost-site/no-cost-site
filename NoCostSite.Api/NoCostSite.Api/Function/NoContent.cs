@@ -1,4 +1,4 @@
-namespace NoCostSite.Api.CSharp.Function
+namespace NoCostSite.Api.Function
 {
     public class NoContent
     {

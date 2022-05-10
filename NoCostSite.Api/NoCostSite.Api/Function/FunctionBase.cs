@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NoCostSite.Utils;
 
-namespace NoCostSite.Api.CSharp.Function
+namespace NoCostSite.Api.Function
 {
     public abstract class FunctionBase
     {

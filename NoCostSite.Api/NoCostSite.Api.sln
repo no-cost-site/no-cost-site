@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoCostSite.Api.CSharp", "NoCostSite.Api.CSharp\NoCostSite.Api.CSharp.csproj", "{E05F6DB2-847C-4052-8C1C-E17317754967}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoCostSite.Api", "NoCostSite.Api\NoCostSite.Api.csproj", "{E05F6DB2-847C-4052-8C1C-E17317754967}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoCostSite.Utils", "NoCostSite.Utils\NoCostSite.Utils.csproj", "{B4C629C5-90EA-4FE0-B5F4-FA482FEABC09}"
 EndProject
