@@ -2,22 +2,19 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using NoCostSite.Utils;
 
 namespace NoCostSite.Function
 {
     public class Executor
     {
-        private readonly string _controllerName;
-        private readonly string _methodName;
+        private readonly RequestContext _requestContext;
 
-        public Executor(string controllerName, string methodName)
+        public Executor(RequestContext requestContext)
         {
-            _controllerName = controllerName;
-            _methodName = methodName;
+            _requestContext = requestContext;
         }
 
-        public async Task<object> ExecuteAsync(HttpContext httpContext, string body)
+        public async Task<object> ExecuteAsync()
         {
             try
             {
@@ -27,10 +24,10 @@ namespace NoCostSite.Function
                 }
                 
                 var @class = Activator.CreateInstance(classType);
-                (@class as ControllerBase)!.Context = httpContext;
+                (@class as ControllerBase)!.Context = _requestContext;
 
                 var inputType = method.GetParameters().SingleOrDefault()?.ParameterType;
-                var inputs = inputType != null ? new[] {body.ToObject(inputType)} : null;
+                var inputs = inputType != null ? new[] {_requestContext.GetBody(inputType)} : null;
 
                 var task = method.Invoke(@class, inputs);
                 return await (task as Task<object>)!;
@@ -45,10 +42,10 @@ namespace NoCostSite.Function
         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
         private bool TryGetClassTypeAndMethod(out Type classType, out MethodInfo method)
         {
-            var className = $"{_controllerName}Controller";
+            var className = $"{_requestContext.Controller}Controller";
             
             classType = GetType().Assembly.GetTypes().SingleOrDefault(x => x.Name == className)!;
-            method = classType?.GetMethod(_methodName)!;
+            method = classType?.GetMethod(_requestContext.Action)!;
 
             return classType != null && method != null;
         }

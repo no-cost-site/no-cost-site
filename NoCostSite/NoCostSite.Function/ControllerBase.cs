@@ -2,6 +2,6 @@ namespace NoCostSite.Function
 {
     public abstract class ControllerBase
     {
-        public HttpContext Context { get; set; } = null!;
+        public RequestContext Context { get; set; } = null!;
     }
 }

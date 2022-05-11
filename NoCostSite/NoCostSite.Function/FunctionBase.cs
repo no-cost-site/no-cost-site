@@ -17,11 +17,9 @@ namespace NoCostSite.Function
             
             try
             {
-                var requestBody = ExtractBody(request.body).ToObject<RequestBody>();
-                var executor = new Executor(requestBody.Controller, requestBody.Action);
-                var httpContext = new HttpContext(request);
-
-                var result = await executor.ExecuteAsync(httpContext, requestBody.Body);
+                var requestContext = RequestContext.Create(request);
+                var executor = new Executor(requestContext);
+                var result = await executor.ExecuteAsync();
                 return Response.Ok(result);
             }
             catch (ValidationException validationException)
@@ -50,18 +48,6 @@ namespace NoCostSite.Function
         private bool IsCors(Request request)
         {
             return request.httpMethod == "OPTIONS";
-        }
-
-        private string ExtractBody(string body)
-        {
-            try
-            {
-                return Encoding.UTF8.GetString(Convert.FromBase64String(body));
-            }
-            catch (Exception)
-            {
-                return body;
-            }
         }
     }
 }
