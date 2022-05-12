@@ -8,6 +8,8 @@ namespace NoCostSite.Function
 {
     public abstract class FunctionBase
     {
+        protected virtual IRequestFilter[] Filters => Array.Empty<IRequestFilter>();
+        
         public async Task<Response> FunctionHandler(Request request)
         {
             if (IsCors(request))
@@ -19,7 +21,10 @@ namespace NoCostSite.Function
             {
                 var requestContext = RequestContext.Create(request);
                 var executor = new Executor(requestContext);
+                
+                Filters.ForEach(x => x.Filter(requestContext));
                 var result = await executor.ExecuteAsync();
+
                 return Response.Ok(result);
             }
             catch (ValidationException validationException)
