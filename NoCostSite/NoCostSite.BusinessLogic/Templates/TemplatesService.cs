@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using NoCostSite.BusinessLogic.FilesUpload;
+using NoCostSite.BusinessLogic.Pages;
 using NoCostSite.Utils;
 
 namespace NoCostSite.BusinessLogic.Templates
@@ -16,7 +18,7 @@ namespace NoCostSite.BusinessLogic.Templates
 
             void Validate()
             {
-                Assert.Validate(() => template.Content.Contains("<!-- Body -->"), "Template must contain tag <!-- Body -->");
+                Assert.Validate(() => template.Content.Contains(nameof(Page.Content).AsTag()), $"Template must contain tag {nameof(Page.Content).AsTag()}");
             }
         }
 
