@@ -13,6 +13,10 @@ namespace NoCostSite.Function
 
         public string AccessKeyId { get; set; } = null!;
 
+        public string Region { get; set; } = null!;
+
+        public string ServiceUrl { get; set; } = null!;
+
         public string? Token { get; set; }
 
         public string Action { get; set; } = null!;
@@ -31,6 +35,8 @@ namespace NoCostSite.Function
                 Token = request.headers.GetValueOrDefault("Token"),
                 AccessKeyId = Environment.GetEnvironmentVariable("AccessKeyId")!,
                 SecretAccessKey = Environment.GetEnvironmentVariable("SecretAccessKey")!,
+                ServiceUrl = Environment.GetEnvironmentVariable("ServiceUrl")!,
+                Region = Environment.GetEnvironmentVariable("Region")!,
             };
         }
 
