@@ -67,7 +67,7 @@ namespace NoCostSite.ObjectStorage.Client
                 };
 
                 var response = await Client.ListObjectsAsync(request);
-              
+
                 return response
                     .S3Objects
                     .Select(x => x.Key)
