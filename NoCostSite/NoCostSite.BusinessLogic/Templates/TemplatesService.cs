@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using NoCostSite.Utils;
 
 namespace NoCostSite.BusinessLogic.Templates
 {
@@ -9,7 +10,14 @@ namespace NoCostSite.BusinessLogic.Templates
         
         public async Task Upsert(Template template)
         {
+            Validate();
+            
             await _repository.Upsert(template);
+
+            void Validate()
+            {
+                Assert.Validate(() => template.Content.Contains("<!-- Body -->"), "Template must contain tag <!-- Body -->");
+            }
         }
 
         public async Task<Template> Read(Guid id)
