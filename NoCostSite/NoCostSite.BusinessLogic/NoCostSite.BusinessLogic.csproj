@@ -5,4 +5,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\NoCostSite.ObjectStorage.Client\NoCostSite.ObjectStorage.Client.csproj" />
+      <ProjectReference Include="..\NoCostSite.Utils\NoCostSite.Utils.csproj" />
+    </ItemGroup>
+
 </Project>
