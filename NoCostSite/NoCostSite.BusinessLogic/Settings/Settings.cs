@@ -10,7 +10,9 @@
 
         public string TokenAudience { get; set; } = null!;
 
-        public string SecureKey { get; set; } = null!;
+        public string TokenSecureKey { get; set; } = null!;
+
+        public string DataBaseSecureKey { get; set; } = null!;
 
         public int TokenExpirationDays { get; set; }
     }

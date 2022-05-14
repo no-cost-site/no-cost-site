@@ -40,7 +40,7 @@ namespace NoCostSite.BusinessLogic.Users
             return user?.Password == HashPassword(password);
         }
 
-        private string Key => SettingsContainer.Current.SecureKey;
+        private string Key => SettingsContainer.Current.DataBaseSecureKey;
 
         private string HashPassword(string password)
         {

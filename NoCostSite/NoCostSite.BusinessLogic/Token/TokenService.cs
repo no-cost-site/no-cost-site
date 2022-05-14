@@ -52,7 +52,7 @@ namespace NoCostSite.BusinessLogic.Token
         
         private string Audience => SettingsContainer.Current.TokenAudience;
 
-        private string Key => SettingsContainer.Current.SecureKey;
+        private string Key => SettingsContainer.Current.TokenSecureKey;
 
         private int ExpirationDays => SettingsContainer.Current.TokenExpirationDays;
 

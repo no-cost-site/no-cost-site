@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using NoCostSite.BusinessLogic.Settings;
 using NoCostSite.ObjectStorage.Client;
@@ -28,7 +30,7 @@ namespace NoCostSite.BusinessLogic.Repository
                     Directory = _directory,
                     Name = item.Id.ToString(),
                 },
-                Content = item.ToJson(),
+                Content = ToStorage(item),
             };
 
             using var client = _objectStorageClientFactory.Create(_bucketName);
@@ -46,7 +48,7 @@ namespace NoCostSite.BusinessLogic.Repository
             using var client = _objectStorageClientFactory.Create(_bucketName);
             var result = await client.Read(fileInfo);
 
-            return result.ToObject<T>();
+            return ToEntity(result);
         }
 
         public async Task<T[]> ReadAll()
@@ -56,7 +58,7 @@ namespace NoCostSite.BusinessLogic.Repository
             var resultList = await client.List(_directory);
             var resultReadMany = await client.ReadMany(resultList);
 
-            return resultReadMany.Select(x => x.ToObject<T>()).ToArray();
+            return resultReadMany.Select(ToEntity).ToArray();
         }
 
         public async Task Delete(Guid id)
@@ -69,6 +71,39 @@ namespace NoCostSite.BusinessLogic.Repository
 
             using var client = _objectStorageClientFactory.Create(_bucketName);
             await client.Delete(fileInfo);
+        }
+
+        private string ToStorage(T item)
+        {
+            var content = item.ToJson();
+            return new Storage
+            {
+                Content = content,
+                Signature = GetSignature(content),
+            }.ToJson();
+        }
+
+        private T ToEntity(string storageJson)
+        {
+            var storage = storageJson.ToObject<Storage>();
+            
+            Assert.Validate(() => GetSignature(storage.Content) == storage.Signature, "Signature is not valid");
+
+            return storage.Content.ToObject<T>();
+        }
+        
+        private string Key => SettingsContainer.Current.DataBaseSecureKey;
+        
+        private string GetSignature(string content)
+        {
+            return Convert.ToBase64String(MD5.Create().ComputeHash(Encoding.Default.GetBytes($"{content}{Key}")));
+        }
+
+        private class Storage
+        {
+            public string Content { get; set; } = null!;
+
+            public string Signature { get; set; } = null!;
         }
     }
 }
