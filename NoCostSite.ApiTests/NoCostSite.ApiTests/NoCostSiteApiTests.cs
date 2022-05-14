@@ -24,6 +24,10 @@ namespace NoCostSite.ApiTests
         {
             _apiWebClient = apiWebClient;
 
+            // Clear
+            await ClearPages();
+            await ClearTemplates();
+
             // Auth
             await CheckAuthFalse();
             var isInit = await AuthIsInit();
@@ -31,23 +35,21 @@ namespace NoCostSite.ApiTests
             _token = await Login();
 
             // Templates
-            await ClearTemplates();
             var template1 = await CreateTemplate();
             var template2 = await CreateTemplate();
             await ReadAllTemplates(template1, template2);
             template1 = await UpdateTemplate(template1.Id);
             await DeleteTemplate(template2.Id);
             await ReadAllTemplates(template1);
-            
+
             // Pages
-            await ClearPages();
             var page1 = await CreatePage();
             var page2 = await CreatePage();
             await ReadAllPages(page1, page2);
             page1 = await UpdatePage(page1.Id);
             await DeletePage(page2.Id);
             await ReadAllPages(page1);
-            
+
             // Upload
         }
 
