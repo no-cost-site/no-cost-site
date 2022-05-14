@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoFixture;
 using FluentAssertions;
@@ -24,6 +25,7 @@ namespace NoCostSite.ApiTests
             _apiWebClient = apiWebClient;
 
             // Auth
+            await CheckAuthFalse();
             var isInit = await AuthIsInit();
             if (!isInit) await Register();
             _token = await Login();
@@ -38,6 +40,15 @@ namespace NoCostSite.ApiTests
             await ReadAllTemplates(template1);
             // Pages
             // Upload
+        }
+
+        private async Task CheckAuthFalse()
+        {
+            await SendWithException(x => x
+                    .WithController("Pages")
+                    .WithAction("ReadAll"),
+                HttpStatusCode.Unauthorized
+            );
         }
 
         private async Task<bool> AuthIsInit()
@@ -171,6 +182,18 @@ namespace NoCostSite.ApiTests
             {
                 TestName = "CSharp api"
             };
+        }
+
+        private async Task SendWithException(Func<RequestBuilder, RequestBuilder> build, HttpStatusCode code)
+        {
+            try
+            {
+                await _apiWebClient.Send<ResultResponse>(build);
+                throw new Exception($"Not throw exception with code {code}");
+            }
+            catch (ApiException e) when (e.Code == code)
+            {
+            }
         }
 
         private string Password => File.ReadAllText("../../../../../../../settings/Password");
