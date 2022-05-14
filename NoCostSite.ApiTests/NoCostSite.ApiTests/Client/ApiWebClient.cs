@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using NoCostSite.ApiTests.Utils;
@@ -10,10 +11,12 @@ namespace NoCostSite.ApiTests.Client
     public class ApiWebClient
     {
         private readonly string _apiUrl;
+        private readonly string _bucketName;
 
-        public ApiWebClient(string apiUrl)
+        public ApiWebClient(string apiUrl, string bucketName)
         {
             _apiUrl = apiUrl;
+            _bucketName = bucketName;
         }
 
         public async Task<TResult> Send<TResult>(Func<RequestBuilder, RequestBuilder> build)
@@ -25,6 +28,14 @@ namespace NoCostSite.ApiTests.Client
             var response = await SendWithCatchExceptionAndLog(wc, url, request.Body);
 
             return response.ToObject<TResult>();
+        }
+
+        public async Task<string> Download(string url, string fileName)
+        {
+            var fileUrl = ConcatUrl($"http://{_bucketName}.website.yandexcloud.net", url, fileName);
+
+            using var wc = new WebClient();
+            return await wc.DownloadStringTaskAsync(fileUrl);
         }
 
         private WebClient CreateWebClient(Request request)
@@ -87,6 +98,11 @@ namespace NoCostSite.ApiTests.Client
         private string BuildUrl(Request request)
         {
             return $"{_apiUrl}?Controller={request.Controller}&Action={request.Action}";
+        }
+
+        private static string ConcatUrl(params string[] urls)
+        {
+            return String.Join("/", urls.Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim('/')));
         }
     }
 }

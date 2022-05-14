@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
 using FluentAssertions;
@@ -31,6 +32,7 @@ namespace NoCostSite.ApiTests
             _token = await Login();
 
             // Clear
+            await ClearFiles();
             await ClearPages();
             await ClearTemplates();
 
@@ -51,6 +53,16 @@ namespace NoCostSite.ApiTests
             await ReadAllPages(page1);
 
             // Upload
+            var page3 = await CreatePage(template1.Id);
+            var file1 = await UploadPage(page1, template1);
+            var file2 = await UploadPage(page3, template1);
+            var file3 = await UploadFile();
+            var file4 = await UploadFile();
+            await UploadTemplate(template1.Id);
+            await ReadAllFiles(file1, file2, file3, file4);
+            await DeletePageFile(page3.Id);
+            await DeleteFile(file4);
+            await ReadAllFiles(file1, file3);
         }
 
         #region Auth
@@ -290,12 +302,104 @@ namespace NoCostSite.ApiTests
 
         #endregion
 
+        #region Upload
+
+        private async Task ClearFiles()
+        {
+            var response = await _apiWebClient.Send<UploadReadAllFilesResponse>(x => x
+                .WithController("Upload")
+                .WithAction("ReadAllFiles")
+                .WithToken(_token)
+            );
+
+            var tasks = response.Items.Select(DeleteFile);
+            await Task.WhenAll(tasks);
+        }
+
+        private async Task<FileItemDto> UploadPage(PageDto page, TemplateDto template)
+        {
+            await _apiWebClient.Send<ResultResponse>(x => x
+                .WithController("Upload")
+                .WithAction("UpsertPage")
+                .WithToken(_token)
+                .WithBody(new {PageId = page.Id})
+            );
+
+            var actual = await _apiWebClient.Download(page.Url, "");
+
+            actual.Should().Be(template.Content.Replace("<!-- Content -->", page.Content));
+
+            return new FileItemDto
+            {
+                Url = page.Url,
+                Name = "index.html"
+            };
+        }
+
+        private async Task<FileItemDto> UploadFile()
+        {
+            var fileItem = _fixture.Create<FileItemDto>();
+            var data = Encoding.Default.GetBytes(_fixture.Create<string>());
+
+            await _apiWebClient.Send<ResultResponse>(x => x
+                .WithController("Upload")
+                .WithAction("UpsertFile")
+                .WithToken(_token)
+                .WithBody(new {fileItem.Url, FileName = fileItem.Name, Data = data})
+            );
+
+            return fileItem;
+        }
+
+        private async Task UploadTemplate(Guid templateId)
+        {
+            await _apiWebClient.Send<ResultResponse>(x => x
+                .WithController("Upload")
+                .WithAction("UpsertTemplate")
+                .WithToken(_token)
+                .WithBody(new {TemplateId = templateId})
+            );
+        }
+
+        private async Task ReadAllFiles(params FileItemDto[] files)
+        {
+            var response = await _apiWebClient.Send<UploadReadAllFilesResponse>(x => x
+                .WithController("Upload")
+                .WithAction("ReadAllFiles")
+                .WithToken(_token)
+            );
+
+            response.Items.Should().BeEquivalentTo(files);
+        }
+
+        private async Task DeletePageFile(Guid pageId)
+        {
+            await _apiWebClient.Send<ResultResponse>(x => x
+                .WithController("Upload")
+                .WithAction("DeletePage")
+                .WithToken(_token)
+                .WithBody(new {PageId = pageId})
+            );
+        }
+
+        private async Task DeleteFile(FileItemDto file)
+        {
+            await _apiWebClient.Send<ResultResponse>(x => x
+                .WithController("Upload")
+                .WithAction("DeleteFile")
+                .WithToken(_token)
+                .WithBody(new {file.Url, FileName = file.Name})
+            );
+        }
+
+        #endregion
+
         #region Private
 
         private static IEnumerable<TestCaseData> ApiWebClients()
         {
             yield return new TestCaseData(
-                new ApiWebClient("https://functions.yandexcloud.net/d4e28654q6ombfhfr8nl")
+                new ApiWebClient(FunctionUrl, BucketName)
             )
             {
                 TestName = "CSharp api"
@@ -315,6 +419,10 @@ namespace NoCostSite.ApiTests
         }
 
         private string Password => File.ReadAllText("../../../../../../../settings/Password");
+
+        private static string FunctionUrl => File.ReadAllText("../../../../../../../settings/FunctionUrl");
+
+        private static string BucketName => File.ReadAllText("../../../../../../../settings/PublicBucketName");
 
         #endregion
     }
