@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using FluentAssertions;
-using NoCostSite.ObjectStorage.Client;
+using NoCostSite.BusinessLogic.ObjectStorage;
 using NUnit.Framework;
 
 namespace NoCostSite.UnitTests

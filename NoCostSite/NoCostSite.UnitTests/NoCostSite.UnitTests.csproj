@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\NoCostSite.ObjectStorage.Client\NoCostSite.ObjectStorage.Client.csproj" />
+      <ProjectReference Include="..\NoCostSite.BusinessLogic\NoCostSite.BusinessLogic.csproj" />
     </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
 
-namespace NoCostSite.ObjectStorage.Client
+namespace NoCostSite.BusinessLogic.ObjectStorage
 {
     public class ObjectStorageClient : IDisposable
     {

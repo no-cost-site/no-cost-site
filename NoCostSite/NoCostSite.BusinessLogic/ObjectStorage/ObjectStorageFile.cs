@@ -1,4 +1,4 @@
-namespace NoCostSite.ObjectStorage.Client
+namespace NoCostSite.BusinessLogic.ObjectStorage
 {
     public class ObjectStorageFile
     {

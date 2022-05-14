@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NoCostSite.BusinessLogic.ObjectStorage;
 using NoCostSite.BusinessLogic.Pages;
 using NoCostSite.BusinessLogic.Settings;
 using NoCostSite.BusinessLogic.Templates;
-using NoCostSite.ObjectStorage.Client;
 
 namespace NoCostSite.BusinessLogic.FilesUpload
 {

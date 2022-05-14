@@ -1,6 +1,6 @@
-﻿namespace NoCostSite.ObjectStorage.Client
+namespace NoCostSite.BusinessLogic.ObjectStorage
 {
-    public class ObjectStorageClientAccessConfig
+    public class ObjectStorageClientConfig
     {
         public string AccessKeyId { get; set; } = null!;
 
@@ -9,5 +9,7 @@
         public string ServiceUrl { get; set; } = null!;
 
         public string AuthenticationRegion { get; set; } = null!;
+
+        public string BucketName { get; set; } = null!;
     }
 }

@@ -21,9 +21,11 @@ namespace NoCostSite.Function
 
         public string TokenAudience { get; set; } = null!;
 
-        public string TokenKey { get; set; } = null!;
+        public string TokenSecureKey { get; set; } = null!;
 
         public int TokenExpirationDays { get; set; }
+
+        public string DataBaseSecureKey { get; set; } = null!;
 
         public string? Token { get; set; }
 
@@ -47,8 +49,9 @@ namespace NoCostSite.Function
                 ObjectStorageRegion = Environment.GetEnvironmentVariable("ObjectStorageRegion")!,
                 TokenIssuer = Environment.GetEnvironmentVariable("TokenIssuer")!,
                 TokenAudience = Environment.GetEnvironmentVariable("TokenAudience")!,
-                TokenKey = Environment.GetEnvironmentVariable("TokenKey")!,
+                TokenSecureKey = Environment.GetEnvironmentVariable("TokenSecureKey")!,
                 TokenExpirationDays = int.Parse(Environment.GetEnvironmentVariable("TokenExpirationDays")!),
+                DataBaseSecureKey = Environment.GetEnvironmentVariable("DataBaseSecureKey")!,
             };
         }
 

@@ -3,8 +3,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using NoCostSite.BusinessLogic.ObjectStorage;
 using NoCostSite.BusinessLogic.Settings;
-using NoCostSite.ObjectStorage.Client;
 using NoCostSite.Utils;
 
 namespace NoCostSite.BusinessLogic.Repository
