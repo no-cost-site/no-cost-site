@@ -1,4 +1,5 @@
-﻿using NoCostSite.BusinessLogic.Settings;
+﻿using System;
+using NoCostSite.BusinessLogic.Settings;
 using NoCostSite.Function;
 
 namespace NoCostSite.Api.Filters
@@ -9,17 +10,17 @@ namespace NoCostSite.Api.Filters
         {
             SettingsContainer.Current = new Settings
             {
-                PublicBucketName = context.PublicBucketName,
-                PrivateBucketName = context.PrivateBucketName,
-                ObjectStorageSecretAccessKey = context.ObjectStorageSecretAccessKey,
-                ObjectStorageAccessKeyId = context.ObjectStorageAccessKeyId,
-                ObjectStorageServiceUrl = context.ObjectStorageServiceUrl,
-                ObjectStorageRegion = context.ObjectStorageRegion,
-                TokenIssuer = context.TokenIssuer,
-                TokenAudience = context.TokenAudience,
-                TokenSecureKey = context.TokenSecureKey,
-                TokenExpirationDays = context.TokenExpirationDays,
-                DataBaseSecureKey = context.DataBaseSecureKey
+                PublicBucketName = Environment.GetEnvironmentVariable("PublicBucketName")!,
+                PrivateBucketName = Environment.GetEnvironmentVariable("PrivateBucketName")!,
+                ObjectStorageAccessKeyId = Environment.GetEnvironmentVariable("ObjectStorageAccessKeyId")!,
+                ObjectStorageSecretAccessKey = Environment.GetEnvironmentVariable("ObjectStorageSecretAccessKey")!,
+                ObjectStorageServiceUrl = Environment.GetEnvironmentVariable("ObjectStorageServiceUrl")!,
+                ObjectStorageRegion = Environment.GetEnvironmentVariable("ObjectStorageRegion")!,
+                TokenIssuer = Environment.GetEnvironmentVariable("TokenIssuer")!,
+                TokenAudience = Environment.GetEnvironmentVariable("TokenAudience")!,
+                TokenSecureKey = Environment.GetEnvironmentVariable("TokenSecureKey")!,
+                TokenExpirationDays = int.Parse(Environment.GetEnvironmentVariable("TokenExpirationDays")!),
+                DataBaseSecureKey = Environment.GetEnvironmentVariable("DataBaseSecureKey")!,
             };
         }
     }
