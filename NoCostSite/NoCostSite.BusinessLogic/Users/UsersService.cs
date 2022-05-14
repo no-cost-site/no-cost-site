@@ -33,6 +33,30 @@ namespace NoCostSite.BusinessLogic.Users
                 Assert.Validate(() => existsUser != null, "User already exists");
             }
         }
+        
+        public async Task ChangePassword(string? oldPassword, string? newPassword, string? passwordConfirm)
+        {
+            await Validate();
+
+            var user = new User
+            {
+                Password = HashPassword(newPassword!)
+            };
+
+            await _repository.Upsert(user);
+            
+            async Task Validate()
+            {
+                Assert.Validate(() => !string.IsNullOrWhiteSpace(oldPassword), "Password should be not empty");
+                Assert.Validate(() => !string.IsNullOrWhiteSpace(newPassword), "Password should be not empty");
+                Assert.Validate(() => !string.IsNullOrWhiteSpace(passwordConfirm),
+                    "Confirm password should be not empty");
+                Assert.Validate(() => newPassword == passwordConfirm, "Passwords don't match");
+
+                var isValidOldPassword = await IsValidPassword(oldPassword!);
+                Assert.Validate(() => isValidOldPassword, "Old password is incorrect");
+            }
+        }
 
         public async Task<bool> IsValidPassword(string password)
         {
