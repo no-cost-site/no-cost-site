@@ -11,7 +11,7 @@ namespace NoCostSite.BusinessLogic.Repository
 {
     public class ObjectStorageRepository<T> : IRepository<T> where T : IStorage
     {
-        private readonly ObjectStorageDirectory _directory = new ObjectStorageDirectory(typeof(T).Name);
+        private readonly ObjectStorageDirectory _directory = new ObjectStorageDirectory(ResolveTypeName(typeof(T)));
         private readonly ObjectStorageClientFactory _objectStorageClientFactory = new ObjectStorageClientFactory();
 
         public async Task Upsert(T item)
@@ -92,6 +92,12 @@ namespace NoCostSite.BusinessLogic.Repository
         private string GetSignature(string content)
         {
             return Convert.ToBase64String(MD5.Create().ComputeHash(Encoding.Default.GetBytes($"{content}{Key}")));
+        }
+
+        private static string ResolveTypeName(Type type)
+        {
+            var itemType = type.IsGenericType ? type.GetGenericArguments().Single() : type;
+            return itemType.Name;
         }
 
         private class Storage
