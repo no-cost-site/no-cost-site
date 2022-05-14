@@ -5,7 +5,7 @@ namespace NoCostSite.Api.Dto
 {
     public class PagesReadAllResponse
     {
-        public PageItemDto[] Items { get; set; }
+        public PageItemDto[] Items { get; set; } = null!;
 
         public static PagesReadAllResponse Ok(Page[] pages)
         {
