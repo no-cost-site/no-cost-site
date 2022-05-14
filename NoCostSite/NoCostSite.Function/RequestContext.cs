@@ -9,13 +9,21 @@ namespace NoCostSite.Function
     {
         public object GetBody(Type type) => Body.ToObject(type);
 
-        public string SecretAccessKey { get; set; } = null!;
+        public string ObjectStorageSecretAccessKey { get; set; } = null!;
 
-        public string AccessKeyId { get; set; } = null!;
+        public string ObjectStorageAccessKeyId { get; set; } = null!;
 
-        public string Region { get; set; } = null!;
+        public string ObjectStorageServiceUrl { get; set; } = null!;
 
-        public string ServiceUrl { get; set; } = null!;
+        public string ObjectStorageRegion { get; set; } = null!;
+
+        public string TokenIssuer { get; set; } = null!;
+
+        public string TokenAudience { get; set; } = null!;
+
+        public string TokenKey { get; set; } = null!;
+
+        public int TokenExpirationDays { get; set; }
 
         public string? Token { get; set; }
 
@@ -33,10 +41,14 @@ namespace NoCostSite.Function
                 Controller = request.queryStringParameters["Controller"],
                 Action = request.queryStringParameters["Action"],
                 Token = request.headers.GetValueOrDefault("Token"),
-                AccessKeyId = Environment.GetEnvironmentVariable("AccessKeyId")!,
-                SecretAccessKey = Environment.GetEnvironmentVariable("SecretAccessKey")!,
-                ServiceUrl = Environment.GetEnvironmentVariable("ServiceUrl")!,
-                Region = Environment.GetEnvironmentVariable("Region")!,
+                ObjectStorageAccessKeyId = Environment.GetEnvironmentVariable("ObjectStorageAccessKeyId")!,
+                ObjectStorageSecretAccessKey = Environment.GetEnvironmentVariable("ObjectStorageSecretAccessKey")!,
+                ObjectStorageServiceUrl = Environment.GetEnvironmentVariable("ObjectStorageServiceUrl")!,
+                ObjectStorageRegion = Environment.GetEnvironmentVariable("ObjectStorageRegion")!,
+                TokenIssuer = Environment.GetEnvironmentVariable("TokenIssuer")!,
+                TokenAudience = Environment.GetEnvironmentVariable("TokenAudience")!,
+                TokenKey = Environment.GetEnvironmentVariable("TokenKey")!,
+                TokenExpirationDays = int.Parse(Environment.GetEnvironmentVariable("TokenExpirationDays")!),
             };
         }
 
