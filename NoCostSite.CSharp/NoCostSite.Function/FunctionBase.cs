@@ -18,7 +18,7 @@ namespace NoCostSite.Function
             try
             {
                 var requestContext = RequestContext.Create(request);
-                var executor = new Executor(requestContext);
+                var executor = new Executor(requestContext, GetType().Assembly);
                 
                 Filters.ForEach(x => x.Filter(requestContext));
                 var result = await executor.ExecuteAsync();

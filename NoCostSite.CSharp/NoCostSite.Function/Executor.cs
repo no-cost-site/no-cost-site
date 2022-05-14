@@ -8,10 +8,12 @@ namespace NoCostSite.Function
     public class Executor
     {
         private readonly RequestContext _requestContext;
+        private readonly Assembly _assembly;
 
-        public Executor(RequestContext requestContext)
+        public Executor(RequestContext requestContext, Assembly assembly)
         {
             _requestContext = requestContext;
+            _assembly = assembly;
         }
 
         public async Task<object> ExecuteAsync()
@@ -44,7 +46,7 @@ namespace NoCostSite.Function
         {
             var className = $"{_requestContext.Controller}Controller";
             
-            classType = GetType().Assembly.GetTypes().SingleOrDefault(x => x.Name == className)!;
+            classType = _assembly.GetTypes().SingleOrDefault(x => x.Name == className)!;
             method = classType?.GetMethod(_requestContext.Action)!;
 
             return classType != null && method != null;
