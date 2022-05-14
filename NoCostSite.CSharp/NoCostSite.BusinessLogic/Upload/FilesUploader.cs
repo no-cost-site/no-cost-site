@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NoCostSite.BusinessLogic.FilesUpload;
 using NoCostSite.BusinessLogic.ObjectStorage;
 using NoCostSite.BusinessLogic.Pages;
 using NoCostSite.BusinessLogic.Settings;
@@ -62,6 +61,18 @@ namespace NoCostSite.BusinessLogic.Upload
             var page = await _pagesService.Read(pageId);
 
             var fileInfo = CreateFileInfo(page);
+
+            using var client = _objectStorageClientFactory.Create(BucketName);
+            await client.Delete(fileInfo);
+        }
+        
+        public async Task DeleteFile(string url, string fileName)
+        {
+            var fileInfo = new ObjectStorageFileInfo
+            {
+                Directory = new ObjectStorageDirectory(url),
+                Name = fileName,
+            };
 
             using var client = _objectStorageClientFactory.Create(BucketName);
             await client.Delete(fileInfo);

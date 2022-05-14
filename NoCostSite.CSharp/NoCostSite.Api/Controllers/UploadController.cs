@@ -37,9 +37,15 @@ namespace NoCostSite.Api.Controllers
             return UploadReadAllFilesResponse.Ok(files);
         }
 
-        public async Task<object> Delete(UploadDeleteRequest request)
+        public async Task<object> DeletePage(UploadDeletePageRequest request)
         {
             await _filesUploader.DeletePage(request.PageId);
+            return ResultResponse.Ok();
+        }
+        
+        public async Task<object> DeleteFile(UploadDeleteFileRequest request)
+        {
+            await _filesUploader.DeleteFile(request.Url, request.FileName);
             return ResultResponse.Ok();
         }
     }

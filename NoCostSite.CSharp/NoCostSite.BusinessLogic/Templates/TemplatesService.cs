@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using NoCostSite.BusinessLogic.FilesUpload;
 using NoCostSite.BusinessLogic.Pages;
+using NoCostSite.BusinessLogic.Upload;
 using NoCostSite.Utils;
 
 namespace NoCostSite.BusinessLogic.Templates
