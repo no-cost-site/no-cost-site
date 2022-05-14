@@ -1,5 +1,5 @@
 ﻿using System;
-using NoCostSite.BusinessLogic.Settings;
+using NoCostSite.BusinessLogic.Config;
 using NoCostSite.Function;
 
 namespace NoCostSite.Api.Filters
@@ -8,7 +8,7 @@ namespace NoCostSite.Api.Filters
     {
         public void Filter(RequestContext context)
         {
-            SettingsContainer.Current = new Settings
+            ConfigContainer.Current = new Config
             {
                 PublicBucketName = Environment.GetEnvironmentVariable("PublicBucketName")!,
                 PrivateBucketName = Environment.GetEnvironmentVariable("PrivateBucketName")!,

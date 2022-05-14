@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using NoCostSite.BusinessLogic.Settings;
+using NoCostSite.BusinessLogic.Config;
 using NoCostSite.Utils;
 
 namespace NoCostSite.BusinessLogic.Users
@@ -70,7 +70,7 @@ namespace NoCostSite.BusinessLogic.Users
             return user != null;
         }
 
-        private string Key => SettingsContainer.Current.DataBaseSecureKey;
+        private string Key => ConfigContainer.Current.DataBaseSecureKey;
 
         private string HashPassword(string password)
         {

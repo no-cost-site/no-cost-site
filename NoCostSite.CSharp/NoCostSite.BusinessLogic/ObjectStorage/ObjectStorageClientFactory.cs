@@ -1,4 +1,4 @@
-﻿using NoCostSite.BusinessLogic.Settings;
+﻿using NoCostSite.BusinessLogic.Config;
 
 namespace NoCostSite.BusinessLogic.ObjectStorage
 {
@@ -6,7 +6,7 @@ namespace NoCostSite.BusinessLogic.ObjectStorage
     {
         public ObjectStorageClient Create(string bucketName)
         {
-            var config = SettingsContainer.Current;
+            var config = ConfigContainer.Current;
             return new ObjectStorageClient(new ObjectStorageClientConfig
             {
                 AccessKeyId = config.ObjectStorageAccessKeyId,

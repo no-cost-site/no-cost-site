@@ -3,8 +3,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using NoCostSite.BusinessLogic.Config;
 using NoCostSite.BusinessLogic.ObjectStorage;
-using NoCostSite.BusinessLogic.Settings;
 using NoCostSite.Utils;
 
 namespace NoCostSite.BusinessLogic.Repository
@@ -85,9 +85,9 @@ namespace NoCostSite.BusinessLogic.Repository
             return storage.Content.ToObject<T>();
         }
 
-        private string Key => SettingsContainer.Current.DataBaseSecureKey;
+        private string Key => ConfigContainer.Current.DataBaseSecureKey;
 
-        private string BucketName => SettingsContainer.Current.PrivateBucketName;
+        private string BucketName => ConfigContainer.Current.PrivateBucketName;
 
         private string GetSignature(string content)
         {

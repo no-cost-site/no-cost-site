@@ -1,6 +1,6 @@
-﻿namespace NoCostSite.BusinessLogic.Settings
+﻿namespace NoCostSite.BusinessLogic.Config
 {
-    public class Settings
+    public class Config
     {
         public string PublicBucketName { get; set; } = null!;
 

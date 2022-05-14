@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NoCostSite.BusinessLogic.Config;
 using NoCostSite.BusinessLogic.ObjectStorage;
 using NoCostSite.BusinessLogic.Pages;
-using NoCostSite.BusinessLogic.Settings;
 using NoCostSite.BusinessLogic.Templates;
 
 namespace NoCostSite.BusinessLogic.Upload
@@ -102,6 +102,6 @@ namespace NoCostSite.BusinessLogic.Upload
             };
         }
         
-        private string BucketName => SettingsContainer.Current.PublicBucketName;
+        private string BucketName => ConfigContainer.Current.PublicBucketName;
     }
 }
