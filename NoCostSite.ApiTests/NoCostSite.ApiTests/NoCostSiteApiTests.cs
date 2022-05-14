@@ -24,15 +24,15 @@ namespace NoCostSite.ApiTests
         {
             _apiWebClient = apiWebClient;
 
-            // Clear
-            await ClearPages();
-            await ClearTemplates();
-
             // Auth
             await CheckAuthFalse();
             var isInit = await AuthIsInit();
             if (!isInit) await Register();
             _token = await Login();
+
+            // Clear
+            await ClearPages();
+            await ClearTemplates();
 
             // Templates
             var template1 = await CreateTemplate();
@@ -43,10 +43,10 @@ namespace NoCostSite.ApiTests
             await ReadAllTemplates(template1);
 
             // Pages
-            var page1 = await CreatePage();
-            var page2 = await CreatePage();
+            var page1 = await CreatePage(template1.Id);
+            var page2 = await CreatePage(template1.Id);
             await ReadAllPages(page1, page2);
-            page1 = await UpdatePage(page1.Id);
+            page1 = await UpdatePage(page1.Id, template1.Id);
             await DeletePage(page2.Id);
             await ReadAllPages(page1);
 
@@ -207,9 +207,12 @@ namespace NoCostSite.ApiTests
             await Task.WhenAll(tasks);
         }
 
-        private async Task<PageDto> CreatePage()
+        private async Task<PageDto> CreatePage(Guid templateId)
         {
-            var page = _fixture.Create<PageDto>();
+            var page = _fixture
+                .Build<PageDto>()
+                .With(x => x.TemplateId, templateId)
+                .Create();
 
             await _apiWebClient.Send<ResultResponse>(x => x
                 .WithController("Pages")
@@ -230,10 +233,11 @@ namespace NoCostSite.ApiTests
             return page;
         }
 
-        private async Task<PageDto> UpdatePage(Guid pageId)
+        private async Task<PageDto> UpdatePage(Guid pageId, Guid templateId)
         {
             var page = _fixture.Build<PageDto>()
                 .With(x => x.Id, pageId)
+                .With(x => x.TemplateId, templateId)
                 .Create();
 
             await _apiWebClient.Send<ResultResponse>(x => x
