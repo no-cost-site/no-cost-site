@@ -35,6 +35,10 @@ namespace NoCostSite.ApiTests
             await ClearFiles();
             await ClearPages();
             await ClearTemplates();
+            
+            // Settings
+            await CreateSettings();
+            await UpdateSettings();
 
             // Templates
             var template1 = await CreateTemplate();
@@ -104,6 +108,50 @@ namespace NoCostSite.ApiTests
             );
 
             return response.Token;
+        }
+
+        #endregion
+
+        #region Settings
+
+        private async Task CreateSettings()
+        {
+            var settings = _fixture.Create<SettingsDto>();
+            
+            await _apiWebClient.Send<ResultResponse>(x => x
+                .WithController("Settings")
+                .WithAction("Upsert")
+                .WithToken(_token)
+                .WithBody(new {Settings = settings})
+            );
+            
+            var actual = await _apiWebClient.Send<SettingsReadResponse>(x => x
+                .WithController("Settings")
+                .WithAction("Read")
+                .WithToken(_token)
+            );
+
+            actual.Settings.Should().BeEquivalentTo(settings);
+        }
+
+        private async Task UpdateSettings()
+        {
+            var settings = _fixture.Create<SettingsDto>();
+            
+            await _apiWebClient.Send<ResultResponse>(x => x
+                .WithController("Settings")
+                .WithAction("Upsert")
+                .WithToken(_token)
+                .WithBody(new {Settings = settings})
+            );
+            
+            var actual = await _apiWebClient.Send<SettingsReadResponse>(x => x
+                .WithController("Settings")
+                .WithAction("Read")
+                .WithToken(_token)
+            );
+
+            actual.Settings.Should().BeEquivalentTo(settings);
         }
 
         #endregion
