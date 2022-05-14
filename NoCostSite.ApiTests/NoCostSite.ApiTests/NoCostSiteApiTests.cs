@@ -51,6 +51,8 @@ namespace NoCostSite.ApiTests
             // Upload
         }
 
+        #region Auth
+
         private async Task CheckAuthFalse()
         {
             await SendWithException(x => x
@@ -89,6 +91,10 @@ namespace NoCostSite.ApiTests
 
             return response.Token;
         }
+
+        #endregion
+
+        #region Templates
 
         private async Task ClearTemplates()
         {
@@ -183,6 +189,10 @@ namespace NoCostSite.ApiTests
             );
         }
 
+        #endregion
+
+        #region Pages
+
         private async Task ClearPages()
         {
             var response = await _apiWebClient.Send<PagesReadAllResponse>(x => x
@@ -272,6 +282,10 @@ namespace NoCostSite.ApiTests
             );
         }
 
+        #endregion
+
+        #region Private
+
         private static IEnumerable<TestCaseData> ApiWebClients()
         {
             yield return new TestCaseData(
@@ -295,5 +309,7 @@ namespace NoCostSite.ApiTests
         }
 
         private string Password => File.ReadAllText("../../../../../../../settings/Password");
+
+        #endregion
     }
 }
