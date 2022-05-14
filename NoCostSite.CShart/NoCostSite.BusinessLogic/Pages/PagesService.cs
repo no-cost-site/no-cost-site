@@ -7,9 +7,9 @@ namespace NoCostSite.BusinessLogic.Pages
     {
         private readonly PagesRepository _repository = new PagesRepository();
         
-        public async Task Upsert(Page template)
+        public async Task Upsert(Page page)
         {
-            await _repository.Upsert(template);
+            await _repository.Upsert(page);
         }
 
         public async Task<Page> Read(Guid id)
