@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using NoCostSite.BusinessLogic.Settings;
 
 namespace NoCostSite.BusinessLogic.Token
 {
@@ -47,13 +48,13 @@ namespace NoCostSite.BusinessLogic.Token
             }
         }
 
-        private string Issuer => TokenConfigContainer.Config.Issuer;
+        private string Issuer => SettingsContainer.Current.TokenIssuer;
         
-        private string Audience => TokenConfigContainer.Config.Audience;
+        private string Audience => SettingsContainer.Current.TokenAudience;
 
-        private string Key => TokenConfigContainer.Config.Key;
+        private string Key => SettingsContainer.Current.SecureKey;
 
-        private int ExpirationDays => TokenConfigContainer.Config.ExpirationDays;
+        private int ExpirationDays => SettingsContainer.Current.TokenExpirationDays;
 
         private SymmetricSecurityKey GetSymmetricSecurityKey()
         {
