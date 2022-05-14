@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\NoCostSite.BusinessLogic\NoCostSite.BusinessLogic.csproj" />
       <ProjectReference Include="..\NoCostSite.Function\NoCostSite.Function.csproj" />
       <ProjectReference Include="..\NoCostSite.Utils\NoCostSite.Utils.csproj" />
     </ItemGroup>

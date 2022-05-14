@@ -9,31 +9,35 @@ namespace NoCostSite.Function
     {
         public object GetBody(Type type) => Body.ToObject(type);
 
-        public string ObjectStorageSecretAccessKey { get; set; } = null!;
+        public string ObjectStorageSecretAccessKey { get; private set; } = null!;
 
-        public string ObjectStorageAccessKeyId { get; set; } = null!;
+        public string ObjectStorageAccessKeyId { get; private set; } = null!;
 
-        public string ObjectStorageServiceUrl { get; set; } = null!;
+        public string ObjectStorageServiceUrl { get; private set; } = null!;
 
-        public string ObjectStorageRegion { get; set; } = null!;
+        public string ObjectStorageRegion { get; private set; } = null!;
 
-        public string TokenIssuer { get; set; } = null!;
+        public string TokenIssuer { get; private set; } = null!;
 
-        public string TokenAudience { get; set; } = null!;
+        public string TokenAudience { get; private set; } = null!;
 
-        public string TokenSecureKey { get; set; } = null!;
+        public string TokenSecureKey { get; private set; } = null!;
 
-        public int TokenExpirationDays { get; set; }
+        public int TokenExpirationDays { get; private set; }
 
-        public string DataBaseSecureKey { get; set; } = null!;
+        public string DataBaseSecureKey { get; private set; } = null!;
 
-        public string? Token { get; set; }
+        public string? Token { get; private set; }
 
-        public string Action { get; set; } = null!;
+        public string Action { get; private set; } = null!;
 
-        public string Controller { get; set; } = null!;
+        public string Controller { get; private set; } = null!;
 
         private string Body { get; set; } = null!;
+        
+        public string PublicBucketName { get; private set; } = null!;
+        
+        public string PrivateBucketName { get; private set; } = null!;
 
         public static RequestContext Create(Request request)
         {
@@ -43,6 +47,8 @@ namespace NoCostSite.Function
                 Controller = request.queryStringParameters["Controller"],
                 Action = request.queryStringParameters["Action"],
                 Token = request.headers.GetValueOrDefault("Token"),
+                PublicBucketName = Environment.GetEnvironmentVariable("PublicBucketName")!,
+                PrivateBucketName = Environment.GetEnvironmentVariable("PrivateBucketName")!,
                 ObjectStorageAccessKeyId = Environment.GetEnvironmentVariable("ObjectStorageAccessKeyId")!,
                 ObjectStorageSecretAccessKey = Environment.GetEnvironmentVariable("ObjectStorageSecretAccessKey")!,
                 ObjectStorageServiceUrl = Environment.GetEnvironmentVariable("ObjectStorageServiceUrl")!,
