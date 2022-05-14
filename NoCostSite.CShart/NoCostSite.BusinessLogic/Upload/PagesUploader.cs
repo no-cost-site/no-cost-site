@@ -2,12 +2,13 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NoCostSite.BusinessLogic.FilesUpload;
 using NoCostSite.BusinessLogic.ObjectStorage;
 using NoCostSite.BusinessLogic.Pages;
 using NoCostSite.BusinessLogic.Settings;
 using NoCostSite.BusinessLogic.Templates;
 
-namespace NoCostSite.BusinessLogic.FilesUpload
+namespace NoCostSite.BusinessLogic.Upload
 {
     public class PagesUploader
     {

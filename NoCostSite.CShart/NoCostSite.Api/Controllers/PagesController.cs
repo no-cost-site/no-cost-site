@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using NoCostSite.Api.Dto;
+using NoCostSite.Api.Dto.Pages;
 using NoCostSite.BusinessLogic.Pages;
 using NoCostSite.Function;
 

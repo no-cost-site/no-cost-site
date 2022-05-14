@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using NoCostSite.Api.Dto;
+using NoCostSite.Api.Dto.Auth;
 using NoCostSite.BusinessLogic.Auth;
 using NoCostSite.BusinessLogic.Users;
 using NoCostSite.Function;

@@ -1,4 +1,4 @@
-namespace NoCostSite.Api.Dto
+namespace NoCostSite.Api.Dto.Users
 {
     public class UsersChangePasswordRequest
     {

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using NoCostSite.BusinessLogic.Templates;
 
-namespace NoCostSite.Api.Dto
+namespace NoCostSite.Api.Dto.Templates
 {
     public class TemplatesReadAllResponse
     {

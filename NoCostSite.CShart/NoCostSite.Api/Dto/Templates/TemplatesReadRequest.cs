@@ -1,6 +1,6 @@
 using System;
 
-namespace NoCostSite.Api.Dto
+namespace NoCostSite.Api.Dto.Templates
 {
     public class TemplatesReadRequest
     {

@@ -1,4 +1,4 @@
-namespace NoCostSite.Api.Dto
+namespace NoCostSite.Api.Dto.Auth
 {
     public class AuthLoginRequest
     {

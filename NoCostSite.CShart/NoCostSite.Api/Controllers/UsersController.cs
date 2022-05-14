@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using NoCostSite.Api.Dto;
+using NoCostSite.Api.Dto.Templates;
+using NoCostSite.Api.Dto.Users;
 using NoCostSite.BusinessLogic.Users;
 using NoCostSite.Function;
 

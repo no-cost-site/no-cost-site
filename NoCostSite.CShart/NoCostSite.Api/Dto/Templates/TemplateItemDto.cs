@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace NoCostSite.Api.Dto
+namespace NoCostSite.Api.Dto.Templates
 {
-    public class PageItemDto
+    public class TemplateItemDto
     {
         public Guid Id { get; set; }
 

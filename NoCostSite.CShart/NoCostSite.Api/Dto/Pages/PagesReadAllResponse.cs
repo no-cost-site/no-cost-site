@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using NoCostSite.BusinessLogic.Pages;
 
-namespace NoCostSite.Api.Dto
+namespace NoCostSite.Api.Dto.Pages
 {
     public class PagesReadAllResponse
     {
