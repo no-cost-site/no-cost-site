@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using NoCostSite.Api.Dto;
 using NoCostSite.Api.Dto.Auth;
 using NoCostSite.BusinessLogic.Auth;
 using NoCostSite.BusinessLogic.Users;
@@ -11,7 +10,7 @@ namespace NoCostSite.Api.Controllers
     {
         private readonly AuthService _authService = new AuthService();
         private readonly UsersService _usersService = new UsersService();
-        
+
         public async Task<object> Login(AuthLoginRequest request)
         {
             var token = await _authService.Login(request.Password);
@@ -22,6 +21,12 @@ namespace NoCostSite.Api.Controllers
         {
             await _usersService.Create(request.Password, request.PasswordConfirm);
             return ResultResponse.Ok();
+        }
+
+        public async Task<object> IsInit()
+        {
+            var userExists = await _usersService.Exists();
+            return AuthIsInitResponse.Ok(userExists);
         }
     }
 }

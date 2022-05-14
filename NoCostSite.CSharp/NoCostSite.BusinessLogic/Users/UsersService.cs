@@ -64,6 +64,12 @@ namespace NoCostSite.BusinessLogic.Users
             return user?.Password == HashPassword(password);
         }
 
+        public async Task<bool> Exists()
+        {
+            var user = await _repository.TryRead();
+            return user != null;
+        }
+
         private string Key => SettingsContainer.Current.DataBaseSecureKey;
 
         private string HashPassword(string password)
