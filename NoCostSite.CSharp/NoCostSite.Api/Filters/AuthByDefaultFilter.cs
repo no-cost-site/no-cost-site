@@ -22,8 +22,11 @@ namespace NoCostSite.Api.Filters
             {
                 return;
             }
-            
-            _authService.IsAuth(context.Token!);
+
+            if (!_authService.IsAuth(context.Token!))
+            {
+                throw new UnauthorizedException();
+            }
         }
     }
 }
