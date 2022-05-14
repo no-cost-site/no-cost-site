@@ -11,15 +11,8 @@ namespace NoCostSite.BusinessLogic.Repository
 {
     public class ObjectStorageRepository<T> : IRepository<T> where T : IStorage
     {
-        private readonly string _bucketName;
-        private readonly ObjectStorageDirectory _directory;
+        private readonly ObjectStorageDirectory _directory = new ObjectStorageDirectory(typeof(T).Name);
         private readonly ObjectStorageClientFactory _objectStorageClientFactory = new ObjectStorageClientFactory();
-
-        public ObjectStorageRepository()
-        {
-            _bucketName = SettingsContainer.Current.PrivateBucketName;
-            _directory = new ObjectStorageDirectory(typeof(T).Name);
-        }
 
         public async Task Upsert(T item)
         {
@@ -33,7 +26,7 @@ namespace NoCostSite.BusinessLogic.Repository
                 Content = ToStorage(item),
             };
 
-            using var client = _objectStorageClientFactory.Create(_bucketName);
+            using var client = _objectStorageClientFactory.Create(BucketName);
             await client.Upsert(file);
         }
 
@@ -45,7 +38,7 @@ namespace NoCostSite.BusinessLogic.Repository
                 Name = id.ToString(),
             };
 
-            using var client = _objectStorageClientFactory.Create(_bucketName);
+            using var client = _objectStorageClientFactory.Create(BucketName);
             var result = await client.Read(fileInfo);
 
             return ToEntity(result);
@@ -53,7 +46,7 @@ namespace NoCostSite.BusinessLogic.Repository
 
         public async Task<T[]> ReadAll()
         {
-            using var client = _objectStorageClientFactory.Create(_bucketName);
+            using var client = _objectStorageClientFactory.Create(BucketName);
 
             var resultList = await client.List(_directory);
             var resultReadMany = await client.ReadMany(resultList);
@@ -69,7 +62,7 @@ namespace NoCostSite.BusinessLogic.Repository
                 Name = id.ToString(),
             };
 
-            using var client = _objectStorageClientFactory.Create(_bucketName);
+            using var client = _objectStorageClientFactory.Create(BucketName);
             await client.Delete(fileInfo);
         }
 
@@ -86,14 +79,16 @@ namespace NoCostSite.BusinessLogic.Repository
         private T ToEntity(string storageJson)
         {
             var storage = storageJson.ToObject<Storage>();
-            
+
             Assert.Validate(() => GetSignature(storage.Content) == storage.Signature, "Signature is not valid");
 
             return storage.Content.ToObject<T>();
         }
-        
+
         private string Key => SettingsContainer.Current.DataBaseSecureKey;
-        
+
+        private string BucketName => SettingsContainer.Current.PrivateBucketName;
+
         private string GetSignature(string content)
         {
             return Convert.ToBase64String(MD5.Create().ComputeHash(Encoding.Default.GetBytes($"{content}{Key}")));

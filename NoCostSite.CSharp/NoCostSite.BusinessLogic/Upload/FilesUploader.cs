@@ -12,15 +12,9 @@ namespace NoCostSite.BusinessLogic.Upload
 {
     public class FilesUploader
     {
-        private readonly string _bucketName;
         private readonly ObjectStorageClientFactory _objectStorageClientFactory = new ObjectStorageClientFactory();
         private readonly PagesService _pagesService = new PagesService();
         private readonly TemplatesService _templatesService = new TemplatesService();
-
-        public FilesUploader()
-        {
-            _bucketName = SettingsContainer.Current.PublicBucketName;
-        }
 
         public async Task UpsertPage(Guid pageId)
         {
@@ -29,7 +23,7 @@ namespace NoCostSite.BusinessLogic.Upload
 
             var file = CreateFile(page, template);
 
-            using var client = _objectStorageClientFactory.Create(_bucketName);
+            using var client = _objectStorageClientFactory.Create(BucketName);
             await client.Upsert(file);
         }
 
@@ -45,7 +39,7 @@ namespace NoCostSite.BusinessLogic.Upload
                 Content = Encoding.Default.GetString(data),
             };
 
-            using var client = _objectStorageClientFactory.Create(_bucketName);
+            using var client = _objectStorageClientFactory.Create(BucketName);
             await client.Upsert(file);
         }
 
@@ -59,7 +53,7 @@ namespace NoCostSite.BusinessLogic.Upload
                 .Select(x => CreateFile(x, template))
                 .ToArray();
 
-            using var client = _objectStorageClientFactory.Create(_bucketName);
+            using var client = _objectStorageClientFactory.Create(BucketName);
             await client.UpsertMany(files);
         }
 
@@ -69,13 +63,13 @@ namespace NoCostSite.BusinessLogic.Upload
 
             var fileInfo = CreateFileInfo(page);
 
-            using var client = _objectStorageClientFactory.Create(_bucketName);
+            using var client = _objectStorageClientFactory.Create(BucketName);
             await client.Delete(fileInfo);
         }
 
         public async Task<ObjectStorageFileInfo[]> ReadAllFiles()
         {
-            using var client = _objectStorageClientFactory.Create(_bucketName);
+            using var client = _objectStorageClientFactory.Create(BucketName);
             return await client.List(ObjectStorageDirectory.Root);
         }
 
@@ -96,5 +90,7 @@ namespace NoCostSite.BusinessLogic.Upload
                 Name = "index.html"
             };
         }
+        
+        private string BucketName => SettingsContainer.Current.PublicBucketName;
     }
 }
