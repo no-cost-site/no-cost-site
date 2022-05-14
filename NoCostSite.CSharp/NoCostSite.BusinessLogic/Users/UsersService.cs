@@ -30,7 +30,7 @@ namespace NoCostSite.BusinessLogic.Users
                 Assert.Validate(() => password == passwordConfirm, "Passwords don't match");
 
                 var existsUser = await _repository.TryRead();
-                Assert.Validate(() => existsUser != null, "User already exists");
+                Assert.Validate(() => existsUser == null, "User already exists");
             }
         }
         
