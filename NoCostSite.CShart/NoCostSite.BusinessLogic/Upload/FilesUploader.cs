@@ -10,19 +10,19 @@ using NoCostSite.BusinessLogic.Templates;
 
 namespace NoCostSite.BusinessLogic.Upload
 {
-    public class PagesUploader
+    public class FilesUploader
     {
         private readonly string _bucketName;
         private readonly ObjectStorageClientFactory _objectStorageClientFactory = new ObjectStorageClientFactory();
         private readonly PagesService _pagesService = new PagesService();
         private readonly TemplatesService _templatesService = new TemplatesService();
 
-        public PagesUploader()
+        public FilesUploader()
         {
             _bucketName = SettingsContainer.Current.PublicBucketName;
         }
 
-        public async Task Upsert(Guid pageId)
+        public async Task UpsertPage(Guid pageId)
         {
             var page = await _pagesService.Read(pageId);
             var template = await _templatesService.Read(page.TemplateId);
@@ -33,7 +33,7 @@ namespace NoCostSite.BusinessLogic.Upload
             await client.Upsert(file);
         }
 
-        public async Task Upsert(string url, string fileName, byte[] data)
+        public async Task UpsertFile(string url, string fileName, byte[] data)
         {
             var file = new ObjectStorageFile
             {
@@ -63,7 +63,7 @@ namespace NoCostSite.BusinessLogic.Upload
             await client.UpsertMany(files);
         }
 
-        public async Task Delete(Guid pageId)
+        public async Task DeletePage(Guid pageId)
         {
             var page = await _pagesService.Read(pageId);
 
@@ -73,7 +73,7 @@ namespace NoCostSite.BusinessLogic.Upload
             await client.Delete(fileInfo);
         }
 
-        public async Task<ObjectStorageFileInfo[]> ReadAll()
+        public async Task<ObjectStorageFileInfo[]> ReadAllFiles()
         {
             using var client = _objectStorageClientFactory.Create(_bucketName);
             return await client.List(ObjectStorageDirectory.Root);
