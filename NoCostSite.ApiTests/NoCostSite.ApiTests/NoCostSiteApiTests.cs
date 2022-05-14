@@ -38,7 +38,16 @@ namespace NoCostSite.ApiTests
             template1 = await UpdateTemplate(template1.Id);
             await DeleteTemplate(template2.Id);
             await ReadAllTemplates(template1);
+            
             // Pages
+            await ClearPages();
+            var page1 = await CreatePage();
+            var page2 = await CreatePage();
+            await ReadAllPages(page1, page2);
+            page1 = await UpdatePage(page1.Id);
+            await DeletePage(page2.Id);
+            await ReadAllPages(page1);
+            
             // Upload
         }
 
@@ -171,6 +180,95 @@ namespace NoCostSite.ApiTests
                 .WithAction("Delete")
                 .WithToken(_token)
                 .WithBody(new {Id = templateId})
+            );
+        }
+
+        private async Task ClearPages()
+        {
+            var response = await _apiWebClient.Send<PagesReadAllResponse>(x => x
+                .WithController("Pages")
+                .WithAction("ReadAll")
+                .WithToken(_token)
+            );
+
+            var tasks = response.Items.Select(x => DeletePage(x.Id));
+            await Task.WhenAll(tasks);
+        }
+
+        private async Task<PageDto> CreatePage()
+        {
+            var page = _fixture.Create<PageDto>();
+
+            await _apiWebClient.Send<ResultResponse>(x => x
+                .WithController("Pages")
+                .WithAction("Upsert")
+                .WithToken(_token)
+                .WithBody(new {Page = page})
+            );
+
+            var response = await _apiWebClient.Send<PagesReadResponse>(x => x
+                .WithController("Pages")
+                .WithAction("Read")
+                .WithToken(_token)
+                .WithBody(new {page.Id})
+            );
+
+            response.Page.Should().BeEquivalentTo(page);
+
+            return page;
+        }
+
+        private async Task<PageDto> UpdatePage(Guid pageId)
+        {
+            var page = _fixture.Build<PageDto>()
+                .With(x => x.Id, pageId)
+                .Create();
+
+            await _apiWebClient.Send<ResultResponse>(x => x
+                .WithController("Pages")
+                .WithAction("Upsert")
+                .WithToken(_token)
+                .WithBody(new {Page = page})
+            );
+
+            var response = await _apiWebClient.Send<PagesReadResponse>(x => x
+                .WithController("Pages")
+                .WithAction("Read")
+                .WithToken(_token)
+                .WithBody(new {page.Id})
+            );
+
+            response.Page.Should().BeEquivalentTo(page);
+
+            return page;
+        }
+
+        private async Task ReadAllPages(params PageDto[] pages)
+        {
+            var response = await _apiWebClient.Send<PagesReadAllResponse>(x => x
+                .WithController("Pages")
+                .WithAction("ReadAll")
+                .WithToken(_token)
+            );
+
+            var items = pages
+                .Select(x => new PageItemDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                })
+                .ToArray();
+
+            response.Items.Should().BeEquivalentTo(items);
+        }
+
+        private async Task DeletePage(Guid pageId)
+        {
+            await _apiWebClient.Send<ResultResponse>(x => x
+                .WithController("Pages")
+                .WithAction("Delete")
+                .WithToken(_token)
+                .WithBody(new {Id = pageId})
             );
         }
 
