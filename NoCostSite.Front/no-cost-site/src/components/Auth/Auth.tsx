@@ -40,7 +40,7 @@ export const Auth = (props: PropsWithChildren<{}>): JSX.Element => {
 
     switch (state) {
         case State.Check:
-            return <Loader.Center/>;
+            return <Loader.CenterBackdrop/>;
 
         case State.NotInit:
             return <Register onLogin={onLogin}/>;

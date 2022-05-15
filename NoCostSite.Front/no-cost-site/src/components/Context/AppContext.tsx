@@ -44,7 +44,7 @@ export const AppContext = (props: PropsWithChildren<{}>): JSX.Element => {
     }, []);
 
     if (!init) {
-        return <Loader.Center/>;
+        return <Loader.CenterBackdrop/>;
     }
 
     return (
