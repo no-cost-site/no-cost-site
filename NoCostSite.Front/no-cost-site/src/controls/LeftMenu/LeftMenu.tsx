@@ -44,7 +44,7 @@ const treeChildIconProps = {
 }
 
 const treeItemProps = {
-    marginLeft: 20,
+    marginLeft: 12,
 }
 
 interface HeaderProps {
