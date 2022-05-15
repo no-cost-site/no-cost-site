@@ -1,7 +1,7 @@
 export const Pages = (): JSX.Element => {
     return (
         <>
-            <h2>Pages</h2>
+            <h1>Pages</h1>
             <p>Select page</p>
         </>
     )

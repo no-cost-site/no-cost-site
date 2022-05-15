@@ -1,7 +1,8 @@
 import React from "react";
 import {Input as InputUI} from "rsuite";
+import {HtmlProps} from "../../utils";
 
-export interface InputProps {
+interface InputProps {
     name: string,
     value: string,
     placeholder?: string,
@@ -31,6 +32,24 @@ export const Password = (props: InputProps): JSX.Element => {
     return (
         <InputUI
             type="password"
+            value={props.value}
+            placeholder={props.placeholder}
+            onChange={onChange}
+        />
+    );
+};
+
+export const TextArea = (props: InputProps & HtmlProps): JSX.Element => {
+    const onChange = (value: string) => {
+        props.onChange(value, props.name);
+    }
+
+    return (
+        <InputUI
+            style={{...props.style}}
+            name={props.name}
+            as="textarea"
+            rows={30}
             value={props.value}
             placeholder={props.placeholder}
             onChange={onChange}

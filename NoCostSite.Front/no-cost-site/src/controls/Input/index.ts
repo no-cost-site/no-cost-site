@@ -1,1 +1,2 @@
-export {Input, Password} from "./Input";
+export {Input, Password, TextArea} from "./Input";
+export {HtmlEditor} from "./HtmlEditor";
