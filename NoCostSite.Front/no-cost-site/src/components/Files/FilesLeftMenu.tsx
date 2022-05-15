@@ -48,12 +48,11 @@ interface FilesLeftMenuItemsProps {
 
 const FilesLeftMenuItems = (props: FilesLeftMenuItemsProps): JSX.Element => {
     const files = props.files.filter(x => x.Url === props.url);
-    const styles = {marginLeft: 10};
 
     return (
         <>
             {props.directories.map(x => (
-                <LeftMenuUI.TreeChild key={x.Url} header={x.Name} eventKey={x.Url} style={styles}>
+                <LeftMenuUI.TreeChild key={x.Url} header={x.Name} eventKey={x.Url}>
                     <FilesLeftMenuItems
                         key={x.Url}
                         files={props.files}
@@ -64,7 +63,7 @@ const FilesLeftMenuItems = (props: FilesLeftMenuItemsProps): JSX.Element => {
                 </LeftMenuUI.TreeChild>
             ))}
             {files.map(x => (
-                <LeftMenuUI.TreeItem key={x.Id} onClick={() => props.onClick(x)} style={styles}>{x.Name}</LeftMenuUI.TreeItem>
+                <LeftMenuUI.TreeItem key={x.Id} onClick={() => props.onClick(x)}>{x.Name}</LeftMenuUI.TreeItem>
             ))}
         </>
     )

@@ -33,6 +33,18 @@ const itemMainStyles = {
     paddingBottom: 14,
 };
 
+const treeChildProps = {
+    marginLeft: 10,
+}
+
+const treeChildIconProps = {
+    marginRight: 5,
+}
+
+const treeItemProps = {
+    marginLeft: 20,
+}
+
 interface HeaderProps {
     icon: IconType;
 }
@@ -76,8 +88,7 @@ export const Item = (props: PropsWithChildren<ItemProps>): JSX.Element => {
 };
 
 export const ItemMain = (props: PropsWithChildren<ItemMainProps>): JSX.Element => {
-    return <Nav.Item onSelect={props.onClick} icon={<Icon type={props.icon}/>}
-                     style={itemMainStyles}>{props.children}</Nav.Item>;
+    return <Nav.Item onSelect={props.onClick} icon={<Icon type={props.icon}/>} style={itemMainStyles}>{props.children}</Nav.Item>;
 };
 
 export const Tree = (props: PropsWithChildren<TreeProps>): JSX.Element => {
@@ -85,11 +96,11 @@ export const Tree = (props: PropsWithChildren<TreeProps>): JSX.Element => {
 };
 
 export const TreeChild = (props: PropsWithChildren<TreeChildProps & HtmlProps>): JSX.Element => {
-    return <Dropdown.Menu title={props.header} eventKey={props.eventKey || "1"} style={props.style}>{props.children}</Dropdown.Menu>;
+    return <Dropdown.Menu title={props.header} eventKey={props.eventKey || "1"} icon={<Icon type={IconType.ArrowRightLine} style={treeChildIconProps}/>} style={{...treeChildProps, ...props.style}}>{props.children}</Dropdown.Menu>;
 };
 
 export const TreeItem = (props: PropsWithChildren<TreeItemProps & HtmlProps>): JSX.Element => {
-    return <Dropdown.Item onSelect={props.onClick} style={props.style}>{props.children}</Dropdown.Item>;
+    return <Dropdown.Item onSelect={props.onClick} icon={<Icon type={IconType.ArrowRight}/>} style={{...treeItemProps, ...props.style}}>{props.children}</Dropdown.Item>;
 };
 
 export const TreeDivider = (): JSX.Element => {
