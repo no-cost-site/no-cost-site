@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import React, {useState} from "react";
 import {PageDto} from "../../Api/dto";
 import {PagesApi, UploadApi} from "../../Api";
@@ -10,6 +10,7 @@ const pageStyles = {
 }
 
 export const Page = (): JSX.Element => {
+    const navigate = useNavigate();
     const pageId = useParams().pageId;
     const {templates, readAll} = React.useContext(Context);
     const [page, setPage] = useState<PageDto | null>(null);
@@ -36,14 +37,14 @@ export const Page = (): JSX.Element => {
         await inLock(async () => {
             await PagesApi.Upsert({Page: page!});
             await UploadApi.UpsertPage({PageId: page!.Id});
-            readAll({pages: true});
+            await readAll({pages: true});
         })
     }
 
     const save = async (): Promise<void> => {
         await inLock(async () => {
             await PagesApi.Upsert({Page: page!});
-            readAll({pages: true});
+            await readAll({pages: true});
         })
     }
 
@@ -51,11 +52,21 @@ export const Page = (): JSX.Element => {
         window.open(`http://no-cost-site.olrix.net.website.yandexcloud.net/${page!.Url}`);
     }
 
+    const deletePage = async (): Promise<void> => {
+        await inLock(async () => {
+            await UploadApi.DeletePage({PageId: page!.Id});
+            await PagesApi.Delete({Id: page!.Id});
+            await readAll({pages: true});
+            navigate("/pages")
+        })
+    }
+
     const onChangeState = (value: string, name?: string) => {
         setPage(x => ({...x!, [name!]: value}));
     }
 
     React.useEffect(() => {
+        setPage(null);
         read();
     }, [pageId]);
 
@@ -94,6 +105,7 @@ export const Page = (): JSX.Element => {
                     <Button name="save-and-publish" text="Save and publish" loading={lock} onClick={saveAdnPublish}/>
                     <Button name="save" text="Save draft" type="default" loading={lock} onClick={save}/>
                     <Button name="open" text="Open on site" type="link" onClick={open}/>
+                    <Button name="delete" text="Delete" type="subtle" loading={lock} onClick={deletePage}/>
                 </Form.Buttons>
             </Form>
         </>

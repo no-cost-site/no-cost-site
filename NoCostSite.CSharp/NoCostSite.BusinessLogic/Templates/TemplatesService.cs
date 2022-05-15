@@ -13,7 +13,8 @@ namespace NoCostSite.BusinessLogic.Templates
         public async Task Upsert(Template template)
         {
             Validate();
-            
+
+            Patch(template);
             await _repository.Upsert(template);
 
             void Validate()
@@ -35,6 +36,14 @@ namespace NoCostSite.BusinessLogic.Templates
         public async Task Delete(Guid id)
         {
             await _repository.Delete(id);
+        }
+
+        private void Patch(Template template)
+        {
+            if (template.Id == Guid.Empty)
+            {
+                template.Id = Guid.NewGuid();
+            }
         }
     }
 }

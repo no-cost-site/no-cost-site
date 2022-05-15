@@ -11,13 +11,13 @@ interface IContextReadAll {
 interface IContext {
     pages: PageItemDto[];
     templates: TemplateItemDto[];
-    readAll: (update?: IContextReadAll) => void;
+    readAll: (update?: IContextReadAll) => Promise<void>;
 }
 
 const defaultContext: IContext = {
     pages: [],
     templates: [],
-    readAll: () => {
+    readAll: async () => {
     },
 }
 

@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import React, {useState} from "react";
 import {TemplateDto} from "../../Api/dto";
 import {TemplatesApi, UploadApi} from "../../Api";
@@ -10,6 +10,7 @@ const pageStyles = {
 }
 
 export const Template = (): JSX.Element => {
+    const navigate = useNavigate();
     const templateId = useParams().templateId;
     const {readAll} = React.useContext(Context);
     const [template, setTemplate] = useState<TemplateDto | null>(null);
@@ -36,14 +37,22 @@ export const Template = (): JSX.Element => {
         await inLock(async () => {
             await TemplatesApi.Upsert({Template: template!});
             await UploadApi.UpsertTemplate({TemplateId: template!.Id});
-            readAll({templates: true});
+            await readAll({templates: true});
         })
     }
 
     const save = async (): Promise<void> => {
         await inLock(async () => {
             await TemplatesApi.Upsert({Template: template!});
-            readAll({templates: true});
+            await readAll({templates: true});
+        })
+    }
+
+    const deleteTemplate = async (): Promise<void> => {
+        await inLock(async () => {
+            await TemplatesApi.Delete({Id: template!.Id});
+            await readAll({templates: true});
+            navigate("/templates")
         })
     }
 
@@ -52,6 +61,7 @@ export const Template = (): JSX.Element => {
     }
 
     React.useEffect(() => {
+        setTemplate(null);
         read();
     }, [templateId]);
 
@@ -72,6 +82,7 @@ export const Template = (): JSX.Element => {
                 <Form.Buttons>
                     <Button name="save-and-publish" text="Save and publish" loading={lock} onClick={saveAdnPublish}/>
                     <Button name="save" text="Save draft" type="default" loading={lock} onClick={save}/>
+                    <Button name="delete" text="Delete" type="subtle" loading={lock} onClick={deleteTemplate}/>
                 </Form.Buttons>
             </Form>
         </>

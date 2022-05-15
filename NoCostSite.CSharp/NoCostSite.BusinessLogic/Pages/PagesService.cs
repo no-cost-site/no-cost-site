@@ -9,6 +9,7 @@ namespace NoCostSite.BusinessLogic.Pages
         
         public async Task Upsert(Page page)
         {
+            Patch(page);
             await _repository.Upsert(page);
         }
 
@@ -25,6 +26,14 @@ namespace NoCostSite.BusinessLogic.Pages
         public async Task Delete(Guid id)
         {
             await _repository.Delete(id);
+        }
+
+        private void Patch(Page page)
+        {
+            if (page.Id == Guid.Empty)
+            {
+                page.Id = Guid.NewGuid();
+            }
         }
     }
 }
