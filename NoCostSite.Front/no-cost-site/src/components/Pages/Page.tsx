@@ -14,6 +14,7 @@ export const Page = (): JSX.Element => {
     const pageId = useParams().pageId;
     const {templates, readAll} = React.useContext(Context);
     const [page, setPage] = useState<PageDto | null>(null);
+    const [currentPage, setCurrentPage] = useState<PageDto | null>(null);
     const [lock, setLock] = React.useState<boolean>(false);
 
     const inLock = async (action: () => Promise<void>): Promise<void> => {
@@ -31,13 +32,19 @@ export const Page = (): JSX.Element => {
     const read = async (): Promise<void> => {
         const response = await PagesApi.Read({Id: pageId!});
         setPage(response.Page);
+        setCurrentPage(response.Page);
     }
 
     const saveAdnPublish = async (): Promise<void> => {
         await inLock(async () => {
+            if (currentPage!.Url !== page!.Url) {
+                await UploadApi.DeletePage({PageId: page!.Id})
+            }
+
             await PagesApi.Upsert({Page: page!});
             await UploadApi.UpsertPage({PageId: page!.Id});
-            await readAll({pages: true});
+            await readAll({pages: true, files: true});
+            setCurrentPage(page!);
         })
     }
 
