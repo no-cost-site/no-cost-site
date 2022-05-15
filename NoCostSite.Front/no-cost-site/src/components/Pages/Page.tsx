@@ -2,7 +2,7 @@ import {useParams} from "react-router-dom";
 import React, {useState} from "react";
 import {PageDto} from "../../Api/dto";
 import {PagesApi, UploadApi} from "../../Api";
-import {Button, Form, Input, Loader, HtmlEditor} from "../../controls";
+import {Button, Form, Input, Loader, HtmlEditor, Select} from "../../controls";
 import {Context} from "../Context/AppContext";
 
 const pageStyles = {
@@ -11,7 +11,7 @@ const pageStyles = {
 
 export const Page = (): JSX.Element => {
     const pageId = useParams().pageId;
-    const {readAll} = React.useContext(Context);
+    const {templates, readAll} = React.useContext(Context);
     const [page, setPage] = useState<PageDto | null>(null);
     const [lock, setLock] = React.useState<boolean>(false);
 
@@ -63,6 +63,8 @@ export const Page = (): JSX.Element => {
         return <Loader.Center/>;
     }
 
+    const templateValues = templates.map(x => ({text: x.Name, value: x.Id}));
+
     return (
         <>
             <h1>{page.Name}</h1>
@@ -72,6 +74,9 @@ export const Page = (): JSX.Element => {
                 </Form.Input>
                 <Form.Input text="Url">
                     <Input name="Url" value={page.Url} onChange={onChangeState}/>
+                </Form.Input>
+                <Form.Input text="Template">
+                    <Select name="TemplateId" value={page.TemplateId} values={templateValues} onChange={onChangeState}/>
                 </Form.Input>
                 <Form.Input text="Title" help="Tag <!-- Title --> in template">
                     <Input name="Title" value={page.Title} onChange={onChangeState}/>
