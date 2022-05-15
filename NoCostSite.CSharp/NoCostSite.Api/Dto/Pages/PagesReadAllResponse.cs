@@ -17,6 +17,7 @@ namespace NoCostSite.Api.Dto.Pages
                         Id = x.Id,
                         Name = x.Name,
                     })
+                    .OrderBy(x => x.Name)
                     .ToArray(),
             };
         }

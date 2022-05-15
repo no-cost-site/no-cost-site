@@ -17,6 +17,7 @@ namespace NoCostSite.Api.Dto.Templates
                         Id = x.Id,
                         Name = x.Name,
                     })
+                    .OrderBy(x => x.Name)
                     .ToArray(),
             };
         }
