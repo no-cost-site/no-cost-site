@@ -13,6 +13,7 @@ import {
     Detail,
     Code,
     Plus,
+    Tree,
 } from "@rsuite/icons";
 import {HtmlProps} from "../../utils";
 
@@ -30,6 +31,7 @@ export enum IconType {
     Detail,
     Code,
     Plus,
+    Tree,
 }
 
 interface IconProps {
@@ -68,6 +70,8 @@ export const Icon = (props: IconProps & HtmlProps) => {
             return <Code {...props}/>;
         case IconType.Plus:
             return <Plus {...props}/>;
+        case IconType.Tree:
+            return <Tree {...props}/>;
         default:
             throw new Error(`Icon ${props.type} not found`);
     }

@@ -93,7 +93,8 @@ namespace NoCostSite.TypeScript
                 var childs = type
                     .GetProperties()
                     .Select(x => x.PropertyType.ResolveType())
-                    .Where(x => x.FullName!.StartsWith("NoCostSite."));
+                    .Where(x => x.FullName!.StartsWith("NoCostSite."))
+                    .Where(x => x != type);
 
                 foreach (var child in GetAllTypes(childs))
                 {

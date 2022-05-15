@@ -1,22 +1,25 @@
 import React, {PropsWithChildren} from 'react';
-import {PageItemDto, TemplateItemDto} from "../../Api/dto";
-import {PagesApi, TemplatesApi} from "../../Api";
+import {FileItemDto, PageItemDto, TemplateItemDto} from "../../Api/dto";
+import {PagesApi, TemplatesApi, UploadApi} from "../../Api";
 import { Loader } from '../../controls';
 
 interface IContextReadAll {
     pages?: boolean;
     templates?: boolean;
+    files?: boolean;
 }
 
 interface IContext {
     pages: PageItemDto[];
     templates: TemplateItemDto[];
+    files: FileItemDto[];
     readAll: (update?: IContextReadAll) => Promise<void>;
 }
 
 const defaultContext: IContext = {
     pages: [],
     templates: [],
+    files: [],
     readAll: async () => {
     },
 }
@@ -36,6 +39,11 @@ export const AppContext = (props: PropsWithChildren<{}>): JSX.Element => {
         if (!update || !!update.templates) {
             const resultTemplates = await TemplatesApi.ReadAll();
             setState(x => ({...x, templates: resultTemplates.Items}));
+        }
+
+        if (!update || !!update.files) {
+            const resultFiles = await UploadApi.ReadAllFiles();
+            setState(x => ({...x, files: resultFiles.Files}));
         }
     }
 

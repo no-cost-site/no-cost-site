@@ -77,6 +77,24 @@ namespace NoCostSite.BusinessLogic.Upload
             using var client = _objectStorageClientFactory.Create(BucketName);
             await client.Delete(fileInfo);
         }
+        
+        public async Task<ObjectStorageFile> ReadFile(string url, string fileName)
+        {
+            var fileInfo = new ObjectStorageFileInfo
+            {
+                Directory = new ObjectStorageDirectory(url),
+                Name = fileName,
+            };
+
+            using var client = _objectStorageClientFactory.Create(BucketName);
+            var content = await client.Read(fileInfo);
+
+            return new ObjectStorageFile
+            {
+                Info = fileInfo,
+                Content = content,
+            };
+        }
 
         public async Task<ObjectStorageFileInfo[]> ReadAllFiles()
         {

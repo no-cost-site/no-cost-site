@@ -11,6 +11,7 @@ export const LeftNavbar = (): JSX.Element => {
                 <LeftNavbarUI.Brand icon={IconType.Email} href="/"/>
                 <LeftNavbarUI.Item icon={IconType.Page} onClick={() => navigate("/pages")}>Pages</LeftNavbarUI.Item>
                 <LeftNavbarUI.Item icon={IconType.Code} onClick={() => navigate("/templates")}>Templates</LeftNavbarUI.Item>
+                <LeftNavbarUI.Item icon={IconType.Tree} onClick={() => navigate("/files")}>Files</LeftNavbarUI.Item>
             </LeftNavbarUI>
         </Show.OnDesktop>
     )

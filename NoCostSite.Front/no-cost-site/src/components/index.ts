@@ -5,3 +5,4 @@ export * from "./LeftMenu";
 export * from "./Body";
 export * from "./TopMenu";
 export * from "./Templates";
+export * from "./Files";

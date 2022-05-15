@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Text;
+using System.Threading.Tasks;
 using NoCostSite.Api.Dto;
 using NoCostSite.Api.Dto.Pages;
 using NoCostSite.Api.Dto.Templates;
@@ -18,19 +19,32 @@ namespace NoCostSite.Api.Controllers
             await _uploadService.UpsertPage(request.PageId);
             return ResultResponse.Ok();
         }
-        
+
         public async Task<ResultResponse> UpsertFile(UploadUpsertFileRequest request)
         {
             await _uploadService.UpsertFile(request.Url, request.FileName, request.Data);
             return ResultResponse.Ok();
         }
-        
+
+        public async Task<ResultResponse> UpsertFileContent(UploadUpsertFileContentRequest request)
+        {
+            var data = Encoding.Default.GetBytes(request.Content);
+            await _uploadService.UpsertFile(request.Url, request.FileName, data);
+            return ResultResponse.Ok();
+        }
+
         public async Task<ResultResponse> UpsertTemplate(UploadUpsertTemplateRequest request)
         {
             await _uploadService.UpsertTemplate(request.TemplateId);
             return ResultResponse.Ok();
         }
-        
+
+        public async Task<UploadReadFileResponse> ReadFile(UploadReadFileRequest request)
+        {
+            var file = await _uploadService.ReadFile(request.Url, request.FileName);
+            return UploadReadFileResponse.Ok(file);
+        }
+
         public async Task<UploadReadAllFilesResponse> ReadAllFiles()
         {
             var files = await _uploadService.ReadAllFiles();
@@ -42,7 +56,7 @@ namespace NoCostSite.Api.Controllers
             await _uploadService.DeletePage(request.PageId);
             return ResultResponse.Ok();
         }
-        
+
         public async Task<ResultResponse> DeleteFile(UploadDeleteFileRequest request)
         {
             await _uploadService.DeleteFile(request.Url, request.FileName);

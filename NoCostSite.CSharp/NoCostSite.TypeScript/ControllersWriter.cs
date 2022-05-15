@@ -42,6 +42,7 @@ namespace NoCostSite.TypeScript
             var dtoTypes = dto
                 .Properties
                 .Where(x => typesResolver.IsDto(x.Type))
+                .Where(x => x.Type.ResolveType() != dto.Type)
                 .Select(x => x.Type.ResolveType().Name)
                 .Distinct()
                 .Join(", ");

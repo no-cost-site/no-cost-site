@@ -1,5 +1,6 @@
-import { FileItemDto } from "./"
+import { FileItemDto, DirectoryDto } from "./"
 
 export interface UploadReadAllFilesResponse {
-   Items: FileItemDto[]
+   Files: FileItemDto[];
+   Directories: DirectoryDto[]
 }

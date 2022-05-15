@@ -76,7 +76,10 @@ export const Template = (): JSX.Element => {
                 <Form.Input text="Name">
                     <Input name="Name" value={template.Name} onChange={onChangeState}/>
                 </Form.Input>
-                <Form.Input text="Content" help="Use tags <!-- Title -->, <!-- Description -->, <!-- Keywords -->, <!-- Content --> in template">
+                <Form.Input
+                    text="Content"
+                    help="Use tags <!-- Title -->, <!-- Description -->, <!-- Keywords -->, <!-- Content --> in template"
+                >
                     <HtmlEditor name="Content" value={template.Content} onChange={onChangeState}/>
                 </Form.Input>
                 <Form.Buttons>
