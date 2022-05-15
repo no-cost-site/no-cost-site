@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {ApiClient} from "./Api";
+import {ApiClientImpl} from "./utils/ApiClientImpl";
+
+ApiClient.Current = new ApiClientImpl("https://functions.yandexcloud.net/d4e28654q6ombfhfr8nl");
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
