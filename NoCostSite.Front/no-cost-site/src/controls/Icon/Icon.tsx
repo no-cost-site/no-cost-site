@@ -1,5 +1,18 @@
 import React from "react";
-import {DataAuthorize, EmailFill, Menu, Message, Notice, Send, Shield, FolderFill, List, Page} from "@rsuite/icons";
+import {
+    DataAuthorize,
+    EmailFill,
+    Menu,
+    Message,
+    Notice,
+    Send,
+    Shield,
+    FolderFill,
+    List,
+    Page,
+    Detail,
+    Code,
+} from "@rsuite/icons";
 import {HtmlProps} from "../../utils";
 
 export enum IconType {
@@ -13,6 +26,8 @@ export enum IconType {
     FolderFill,
     List,
     Page,
+    Detail,
+    Code,
 }
 
 interface IconProps {
@@ -45,6 +60,10 @@ export const Icon = (props: IconProps & HtmlProps) => {
             return <List {...props}/>;
         case IconType.Page:
             return <Page {...props}/>;
+        case IconType.Detail:
+            return <Detail {...props}/>;
+        case IconType.Code:
+            return <Code {...props}/>;
         default:
             throw new Error(`Icon ${props.type} not found`);
     }

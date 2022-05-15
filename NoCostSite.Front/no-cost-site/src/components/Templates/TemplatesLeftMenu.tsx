@@ -1,21 +1,21 @@
 import React from 'react';
 import {Context} from "../Context/AppContext";
 import {IconType, LeftMenu as LeftMenuUI} from "../../controls";
-import {PageItemDto} from "../../Api/dto";
+import {TemplateItemDto} from "../../Api/dto";
 import {useNavigate} from "react-router-dom";
 
-export const PagesLeftMenu = (): JSX.Element => {
+export const TemplatesLeftMenu = (): JSX.Element => {
     const navigate = useNavigate();
-    const {pages} = React.useContext(Context);
+    const {templates} = React.useContext(Context);
 
-    const onClick = (page: PageItemDto) => {
-        navigate(`/pages/page/${page!.Id}`);
+    const onClick = (template: TemplateItemDto) => {
+        navigate(`/templates/template/${template!.Id}`);
     }
 
     return (
         <LeftMenuUI>
-            <LeftMenuUI.Header icon={IconType.Page}>Pages</LeftMenuUI.Header>
-            {pages.map(x => (
+            <LeftMenuUI.Header icon={IconType.Code}>Templates</LeftMenuUI.Header>
+            {templates.map(x => (
                 <LeftMenuUI.Item key={x.Id} onClick={() => onClick(x)}>{x.Name}</LeftMenuUI.Item>
             ))}
         </LeftMenuUI>

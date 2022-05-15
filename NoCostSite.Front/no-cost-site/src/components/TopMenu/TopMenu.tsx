@@ -9,6 +9,7 @@ export const TopMenu = (): JSX.Element => {
         <Show.OnMobile>
             <TopMenuUI title="no-cost-site.CRM">
                 <TopMenuUI.Item icon={IconType.Page} onClick={() => navigate("/pages")}/>
+                <TopMenuUI.Item icon={IconType.Code} onClick={() => navigate("/templates")}/>
             </TopMenuUI>
         </Show.OnMobile>
     )
