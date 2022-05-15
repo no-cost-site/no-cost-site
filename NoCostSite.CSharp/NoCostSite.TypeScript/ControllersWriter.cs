@@ -115,7 +115,11 @@ export const {controller.Name} = {{
                 }
 
                 return $@"    {action.Name}: async (): Promise<{action.Response.Name}> => {{
-        const url = ApiClient.Current!.getUrl();
+        const apiUrl = ApiClient.Current!.getUrl();
+        const controller = ""{controller.Name.Replace("Api", "")}"";
+        const action = ""{action.Name}"";
+
+        const url = `${{apiUrl}}?Controller=${{controller}}&Action=${{action}}`;
         return await ApiClient.Current!.send(url);
     }}";
             }

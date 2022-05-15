@@ -1,3 +1,5 @@
+import { TemplateDto } from "./"
+
 export interface TemplatesUpsertRequest {
-   Template: string
+   Template: TemplateDto
 }

@@ -12,7 +12,11 @@ export const PagesApi = {
     },
 
     ReadAll: async (): Promise<PagesReadAllResponse> => {
-        const url = ApiClient.Current!.getUrl();
+        const apiUrl = ApiClient.Current!.getUrl();
+        const controller = "Pages";
+        const action = "ReadAll";
+
+        const url = `${apiUrl}?Controller=${controller}&Action=${action}`;
         return await ApiClient.Current!.send(url);
     },
 

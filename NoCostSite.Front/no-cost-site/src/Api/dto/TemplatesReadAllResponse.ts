@@ -1,3 +1,5 @@
+import { TemplateItemDto } from "./"
+
 export interface TemplatesReadAllResponse {
-   Items: string[]
+   Items: TemplateItemDto[]
 }

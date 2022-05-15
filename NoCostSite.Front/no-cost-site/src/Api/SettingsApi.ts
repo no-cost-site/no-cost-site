@@ -12,7 +12,11 @@ export const SettingsApi = {
     },
 
     Read: async (): Promise<SettingsReadResponse> => {
-        const url = ApiClient.Current!.getUrl();
+        const apiUrl = ApiClient.Current!.getUrl();
+        const controller = "Settings";
+        const action = "Read";
+
+        const url = `${apiUrl}?Controller=${controller}&Action=${action}`;
         return await ApiClient.Current!.send(url);
     }
 }

@@ -1,4 +1,6 @@
+import { Error } from "./"
+
 export interface ResultResponse {
    IsSuccess: boolean;
-   Error: string
+   Error: Error
 }

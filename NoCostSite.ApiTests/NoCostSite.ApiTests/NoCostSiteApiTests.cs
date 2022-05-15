@@ -30,6 +30,7 @@ namespace NoCostSite.ApiTests
             var isInit = await AuthIsInit();
             if (!isInit) await Register();
             _token = await Login();
+            await CheckAuthTrue();
 
             // Clear
             await ClearFiles();
@@ -37,7 +38,6 @@ namespace NoCostSite.ApiTests
             await ClearTemplates();
             
             // Settings
-            await CreateSettings();
             await UpdateSettings();
 
             // Templates
@@ -73,11 +73,29 @@ namespace NoCostSite.ApiTests
 
         private async Task CheckAuthFalse()
         {
+            var response = await _apiWebClient.Send<ResultResponse>(x => x
+                .WithController("Auth")
+                .WithAction("Check")
+            );
+
+            response.IsSuccess.Should().BeFalse();
+            
             await SendWithException(x => x
                     .WithController("Pages")
                     .WithAction("ReadAll"),
                 HttpStatusCode.Unauthorized
             );
+        }
+
+        private async Task CheckAuthTrue()
+        {
+            var response = await _apiWebClient.Send<ResultResponse>(x => x
+                .WithController("Auth")
+                .WithAction("Check")
+                .WithToken(_token)
+            );
+
+            response.IsSuccess.Should().BeTrue();
         }
 
         private async Task<bool> AuthIsInit()
@@ -95,7 +113,7 @@ namespace NoCostSite.ApiTests
             await _apiWebClient.Send<ResultResponse>(x => x
                 .WithController("Auth")
                 .WithAction("Register")
-                .WithBody(new {Password, PasswordConfirm = Password})
+                .WithBody(new {Settings = new {Language = "en"}, Password, PasswordConfirm = Password})
             );
         }
 
@@ -113,26 +131,6 @@ namespace NoCostSite.ApiTests
         #endregion
 
         #region Settings
-
-        private async Task CreateSettings()
-        {
-            var settings = _fixture.Create<SettingsDto>();
-            
-            await _apiWebClient.Send<ResultResponse>(x => x
-                .WithController("Settings")
-                .WithAction("Upsert")
-                .WithToken(_token)
-                .WithBody(new {Settings = settings})
-            );
-            
-            var actual = await _apiWebClient.Send<SettingsReadResponse>(x => x
-                .WithController("Settings")
-                .WithAction("Read")
-                .WithToken(_token)
-            );
-
-            actual.Settings.Should().BeEquivalentTo(settings);
-        }
 
         private async Task UpdateSettings()
         {

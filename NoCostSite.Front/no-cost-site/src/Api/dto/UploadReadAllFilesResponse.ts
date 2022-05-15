@@ -1,3 +1,5 @@
+import { FileItemDto } from "./"
+
 export interface UploadReadAllFilesResponse {
-   Items: string[]
+   Items: FileItemDto[]
 }

@@ -1,3 +1,5 @@
+import { PageDto } from "./"
+
 export interface PagesReadResponse {
-   Page: string
+   Page: PageDto
 }

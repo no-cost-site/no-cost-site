@@ -1,7 +1,16 @@
-import { AuthLoginRequest, AuthLoginResponse, AuthRegisterRequest, ResultResponse, AuthIsInitResponse } from "./dto"
+import { ResultResponse, AuthLoginRequest, AuthLoginResponse, AuthRegisterRequest, AuthIsInitResponse } from "./dto"
 import { ApiClient } from "./ApiClient";
 
 export const AuthApi = {
+    Check: async (): Promise<ResultResponse> => {
+        const apiUrl = ApiClient.Current!.getUrl();
+        const controller = "Auth";
+        const action = "Check";
+
+        const url = `${apiUrl}?Controller=${controller}&Action=${action}`;
+        return await ApiClient.Current!.send(url);
+    },
+
     Login: async (request: AuthLoginRequest): Promise<AuthLoginResponse> => {
         const apiUrl = ApiClient.Current!.getUrl();
         const controller = "Auth";
@@ -21,7 +30,11 @@ export const AuthApi = {
     },
 
     IsInit: async (): Promise<AuthIsInitResponse> => {
-        const url = ApiClient.Current!.getUrl();
+        const apiUrl = ApiClient.Current!.getUrl();
+        const controller = "Auth";
+        const action = "IsInit";
+
+        const url = `${apiUrl}?Controller=${controller}&Action=${action}`;
         return await ApiClient.Current!.send(url);
     }
 }

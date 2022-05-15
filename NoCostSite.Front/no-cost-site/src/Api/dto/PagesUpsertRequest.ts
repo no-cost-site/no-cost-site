@@ -1,3 +1,5 @@
+import { PageDto } from "./"
+
 export interface PagesUpsertRequest {
-   Page: string
+   Page: PageDto
 }

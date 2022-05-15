@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import 'rsuite/dist/rsuite.min.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {ApiClient} from "./Api";
-import {ApiClientImpl} from "./utils/ApiClientImpl";
+import {ApiClientImpl} from "./utils";
 
 ApiClient.Current = new ApiClientImpl("https://functions.yandexcloud.net/d4e28654q6ombfhfr8nl");
 

@@ -1,3 +1,5 @@
+import { SettingsDto } from "./"
+
 export interface SettingsReadResponse {
-   Settings: string
+   Settings: SettingsDto
 }

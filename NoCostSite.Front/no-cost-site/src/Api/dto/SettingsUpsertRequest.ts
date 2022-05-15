@@ -1,3 +1,5 @@
+import { SettingsDto } from "./"
+
 export interface SettingsUpsertRequest {
-   Settings: string
+   Settings: SettingsDto
 }

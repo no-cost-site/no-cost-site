@@ -30,7 +30,11 @@ export const UploadApi = {
     },
 
     ReadAllFiles: async (): Promise<UploadReadAllFilesResponse> => {
-        const url = ApiClient.Current!.getUrl();
+        const apiUrl = ApiClient.Current!.getUrl();
+        const controller = "Upload";
+        const action = "ReadAllFiles";
+
+        const url = `${apiUrl}?Controller=${controller}&Action=${action}`;
         return await ApiClient.Current!.send(url);
     },
 

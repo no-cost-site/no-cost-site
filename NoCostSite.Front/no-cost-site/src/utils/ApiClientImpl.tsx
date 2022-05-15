@@ -20,10 +20,6 @@ export class ApiClientImpl {
             },
             body: data && JSON.stringify(data),
         });
-        if (result.status === 401) {
-            // eslint-disable-next-line no-restricted-globals
-            location.href = `#/auth`;
-        }
         if (!result.ok || result.status !== 200) {
             throw new Error("Request error")
         }

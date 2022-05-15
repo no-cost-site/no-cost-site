@@ -1,3 +1,5 @@
+import { TemplateDto } from "./"
+
 export interface TemplatesReadResponse {
-   Template: string
+   Template: TemplateDto
 }

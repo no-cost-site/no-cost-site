@@ -12,7 +12,11 @@ export const TemplatesApi = {
     },
 
     ReadAll: async (): Promise<TemplatesReadAllResponse> => {
-        const url = ApiClient.Current!.getUrl();
+        const apiUrl = ApiClient.Current!.getUrl();
+        const controller = "Templates";
+        const action = "ReadAll";
+
+        const url = `${apiUrl}?Controller=${controller}&Action=${action}`;
         return await ApiClient.Current!.send(url);
     },
 
