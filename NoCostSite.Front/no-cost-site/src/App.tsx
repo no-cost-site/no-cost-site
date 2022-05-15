@@ -1,7 +1,6 @@
 import React from 'react';
 import {HashRouter, Routes, Route, Navigate} from "react-router-dom";
-import {Auth, Pages} from "./components";
-import {AppContext} from "./components/Context/AppContext";
+import {Auth, Pages, Body, AppContext, PagesLeftMenu, Page} from "./components";
 
 function App() {
     return (
@@ -10,7 +9,8 @@ function App() {
                 <HashRouter>
                     <Routes>
                         <Route path="/" element={<Navigate to="/pages"/>}/>
-                        <Route path="/pages" element={<Pages/>}/>
+                        <Route path="/pages" element={<Body body={<Pages/>} leftMenu={<PagesLeftMenu/>}/>}/>
+                        <Route path="/pages/page/:pageId" element={<Body body={<Page/>} leftMenu={<PagesLeftMenu/>}/>}/>
                     </Routes>
                 </HashRouter>
             </AppContext>
