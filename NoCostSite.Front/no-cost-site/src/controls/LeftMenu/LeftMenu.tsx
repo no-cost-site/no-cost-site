@@ -5,6 +5,8 @@ import {HtmlProps} from "../../utils";
 
 const leftMenuStyles = {
     backgroundColor: "#f7f7fa",
+    width: 350,
+    flex: "0 0 350px",
 };
 
 const headerStyles = {

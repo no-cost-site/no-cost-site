@@ -5,11 +5,6 @@ import {DirectoryDto, FileItemDto} from "../../Api/dto";
 import {useNavigate} from "react-router-dom";
 import {UploadApi} from "../../Api";
 
-const leftMenuStyles = {
-    width: 500,
-    flex: "0 0 500px"
-}
-
 export const FilesLeftMenu = (): JSX.Element => {
     const navigate = useNavigate();
     const {files, directory, readAll} = React.useContext(Context);
@@ -24,7 +19,7 @@ export const FilesLeftMenu = (): JSX.Element => {
     }
 
     return (
-        <LeftMenuUI style={leftMenuStyles}>
+        <LeftMenuUI>
             <LeftMenuUI.Header icon={IconType.Tree}>Files</LeftMenuUI.Header>
             <LeftMenuUI.Tree header="/">
                 <FilesLeftMenuItems
