@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NoCostSite.BusinessLogic.ObjectStorage;
 
@@ -8,7 +9,7 @@ namespace NoCostSite.Api.Dto.Upload
     {
         public FileItemDto[] Files { get; set; } = null!;
 
-        public DirectoryDto[] Directories { get; set; } = null!;
+        public DirectoryDto Directory { get; set; } = null!;
 
         public static UploadReadAllFilesResponse Ok(ObjectStorageFileInfo[] pages)
         {
@@ -16,7 +17,7 @@ namespace NoCostSite.Api.Dto.Upload
             return new UploadReadAllFilesResponse
             {
                 Files = files,
-                Directories = BuildDirectories(files),
+                Directory = BuildDirectory(files),
             };
         }
 
@@ -33,32 +34,58 @@ namespace NoCostSite.Api.Dto.Upload
                 .ToArray();
         }
 
-        private static DirectoryDto[] BuildDirectories(FileItemDto[] files)
+        private static DirectoryDto BuildDirectory(FileItemDto[] files)
         {
             var paths = files
                 .Select(x => x.Url)
                 .Distinct()
+                .Where(x => !string.IsNullOrEmpty(x))
                 .Select(x => x.Split("/"))
                 .ToArray();
 
-            return GetDirectories(paths, 0).ToArray();
+            return new DirectoryDto
+            {
+                Name = "",
+                Url = "",
+                Child = GetDirectories(paths, Array.Empty<string>()).ToArray(),
+            };
         }
 
-        private static IEnumerable<DirectoryDto> GetDirectories(string[][] paths, int index)
+        private static IEnumerable<DirectoryDto> GetDirectories(string[][] paths, string[] currentPath)
         {
-            var indexPath = paths
-                .Where(x => x.Length > index)
-                .OrderBy(x => x[index]);
-            
-            foreach (var path in indexPath)
+            var names = paths
+                .Where(x => StartWith(x, currentPath))
+                .Select(x => x[currentPath.Length])
+                .OrderBy(x => x);
+
+            foreach (var name in names)
             {
+                var directoryPath = currentPath.Append(name).ToArray();
                 yield return new DirectoryDto
                 {
-                    Name = path[index],
-                    Url = string.Join("/", path.Take(index + 1)),
-                    Child = GetDirectories(paths, index + 1).ToArray(),
+                    Name = name,
+                    Url = string.Join("/", directoryPath),
+                    Child = GetDirectories(paths, directoryPath).ToArray(),
                 };
             }
+        }
+
+        private static bool StartWith(string[] path, string[] start)
+        {
+            if (path.Length <= start.Length)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < start.Length; i++)
+            {
+                if (path[i] != start[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
