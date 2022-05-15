@@ -9,7 +9,7 @@ using NoCostSite.BusinessLogic.Templates;
 
 namespace NoCostSite.BusinessLogic.Upload
 {
-    public class FilesUploader
+    public class UploadService
     {
         private readonly ObjectStorageClientFactory _objectStorageClientFactory = new ObjectStorageClientFactory();
         private readonly PagesService _pagesService = new PagesService();
