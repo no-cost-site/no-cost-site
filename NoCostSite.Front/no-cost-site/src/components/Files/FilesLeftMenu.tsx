@@ -27,7 +27,12 @@ export const FilesLeftMenu = (): JSX.Element => {
         <LeftMenuUI style={leftMenuStyles}>
             <LeftMenuUI.Header icon={IconType.Tree}>Files</LeftMenuUI.Header>
             <LeftMenuUI.Tree header="/">
-                <FilesLeftMenuItems files={files} directories={directory.Child} url={directory.Url} onClick={onClick}/>
+                <FilesLeftMenuItems
+                    files={files}
+                    directories={directory.Child}
+                    url={directory.Url}
+                    onClick={onClick}
+                />
             </LeftMenuUI.Tree>
             <LeftMenuUI.ItemMain onClick={onCreate} icon={IconType.Plus}>Create new</LeftMenuUI.ItemMain>
         </LeftMenuUI>
@@ -43,16 +48,23 @@ interface FilesLeftMenuItemsProps {
 
 const FilesLeftMenuItems = (props: FilesLeftMenuItemsProps): JSX.Element => {
     const files = props.files.filter(x => x.Url === props.url);
+    const styles = {marginLeft: 10};
 
     return (
         <>
             {props.directories.map(x => (
-                <LeftMenuUI.TreeChild key={x.Url} header={x.Name} eventKey={x.Url}>
-                    <FilesLeftMenuItems key={x.Url} files={props.files} directories={x.Child} url={x.Url} onClick={props.onClick}/>
+                <LeftMenuUI.TreeChild key={x.Url} header={x.Name} eventKey={x.Url} style={styles}>
+                    <FilesLeftMenuItems
+                        key={x.Url}
+                        files={props.files}
+                        directories={x.Child}
+                        url={x.Url}
+                        onClick={props.onClick}
+                    />
                 </LeftMenuUI.TreeChild>
             ))}
             {files.map(x => (
-                <LeftMenuUI.TreeItem key={x.Id} onClick={() => props.onClick(x)}>{x.Name}</LeftMenuUI.TreeItem>
+                <LeftMenuUI.TreeItem key={x.Id} onClick={() => props.onClick(x)} style={styles}>{x.Name}</LeftMenuUI.TreeItem>
             ))}
         </>
     )

@@ -84,12 +84,12 @@ export const Tree = (props: PropsWithChildren<TreeProps>): JSX.Element => {
     return <Dropdown title={props.header} eventKey="1">{props.children}</Dropdown>;
 };
 
-export const TreeChild = (props: PropsWithChildren<TreeChildProps>): JSX.Element => {
-    return <Dropdown.Menu title={props.header} eventKey={props.eventKey || "1"}>{props.children}</Dropdown.Menu>;
+export const TreeChild = (props: PropsWithChildren<TreeChildProps & HtmlProps>): JSX.Element => {
+    return <Dropdown.Menu title={props.header} eventKey={props.eventKey || "1"} style={props.style}>{props.children}</Dropdown.Menu>;
 };
 
-export const TreeItem = (props: PropsWithChildren<TreeItemProps>): JSX.Element => {
-    return <Dropdown.Item onSelect={props.onClick}>{props.children}</Dropdown.Item>;
+export const TreeItem = (props: PropsWithChildren<TreeItemProps & HtmlProps>): JSX.Element => {
+    return <Dropdown.Item onSelect={props.onClick} style={props.style}>{props.children}</Dropdown.Item>;
 };
 
 export const TreeDivider = (): JSX.Element => {
