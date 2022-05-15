@@ -1,6 +1,7 @@
 import React, {PropsWithChildren} from "react";
 import {Dropdown, Nav, Sidebar, Sidenav} from "rsuite";
 import {Icon, IconType} from "../Icon";
+import {HtmlProps} from "../../utils";
 
 const leftMenuStyles = {
     backgroundColor: "#f7f7fa",
@@ -51,6 +52,16 @@ interface TreeProps {
     header: string;
 }
 
+interface TreeChildProps {
+    header: string;
+    eventKey?: string;
+}
+
+interface TreeItemProps {
+    name?: string;
+    onClick?: (name?: string) => void;
+}
+
 export const Header = (props: PropsWithChildren<HeaderProps>): JSX.Element => {
     return (
         <Sidenav.Header style={headerStyles}>
@@ -65,15 +76,20 @@ export const Item = (props: PropsWithChildren<ItemProps>): JSX.Element => {
 };
 
 export const ItemMain = (props: PropsWithChildren<ItemMainProps>): JSX.Element => {
-    return <Nav.Item onSelect={props.onClick} icon={<Icon type={props.icon}/>} style={itemMainStyles}>{props.children}</Nav.Item>;
+    return <Nav.Item onSelect={props.onClick} icon={<Icon type={props.icon}/>}
+                     style={itemMainStyles}>{props.children}</Nav.Item>;
 };
 
 export const Tree = (props: PropsWithChildren<TreeProps>): JSX.Element => {
     return <Dropdown title={props.header} eventKey="1">{props.children}</Dropdown>;
 };
 
-export const TreeItem = (props: PropsWithChildren<{}>): JSX.Element => {
-    return <Dropdown.Item>{props.children}</Dropdown.Item>;
+export const TreeChild = (props: PropsWithChildren<TreeChildProps>): JSX.Element => {
+    return <Dropdown.Menu title={props.header} eventKey={props.eventKey || "1"}>{props.children}</Dropdown.Menu>;
+};
+
+export const TreeItem = (props: PropsWithChildren<TreeItemProps>): JSX.Element => {
+    return <Dropdown.Item onSelect={props.onClick}>{props.children}</Dropdown.Item>;
 };
 
 export const TreeDivider = (): JSX.Element => {
@@ -92,11 +108,12 @@ export const MenuDivider = (): JSX.Element => {
     return <Dropdown.Item divider/>;
 };
 
-export class LeftMenu extends React.Component<PropsWithChildren<{}>> {
+export class LeftMenu extends React.Component<PropsWithChildren<HtmlProps>> {
     public static readonly Header = Header;
     public static readonly Item = Item;
     public static readonly ItemMain = ItemMain;
     public static readonly Tree = Tree;
+    public static readonly TreeChild = TreeChild;
     public static readonly TreeItem = TreeItem;
     public static readonly TreeDivider = TreeDivider;
     public static readonly Menu = Menu;
@@ -105,7 +122,7 @@ export class LeftMenu extends React.Component<PropsWithChildren<{}>> {
 
     public render(): JSX.Element {
         return (
-            <Sidebar style={leftMenuStyles}>
+            <Sidebar style={{...leftMenuStyles, ...this.props.style}}>
                 <Sidenav defaultOpenKeys={['1']}>
                     <Sidenav.Body>
                         <Nav>

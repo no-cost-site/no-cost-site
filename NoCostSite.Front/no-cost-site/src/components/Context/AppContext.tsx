@@ -1,7 +1,7 @@
 import React, {PropsWithChildren} from 'react';
-import {FileItemDto, PageItemDto, TemplateItemDto} from "../../Api/dto";
+import {DirectoryDto, FileItemDto, PageItemDto, TemplateItemDto} from "../../Api/dto";
 import {PagesApi, TemplatesApi, UploadApi} from "../../Api";
-import { Loader } from '../../controls';
+import {Loader} from '../../controls';
 
 interface IContextReadAll {
     pages?: boolean;
@@ -13,6 +13,7 @@ interface IContext {
     pages: PageItemDto[];
     templates: TemplateItemDto[];
     files: FileItemDto[];
+    directory: DirectoryDto;
     readAll: (update?: IContextReadAll) => Promise<void>;
 }
 
@@ -20,6 +21,7 @@ const defaultContext: IContext = {
     pages: [],
     templates: [],
     files: [],
+    directory: {} as any,
     readAll: async () => {
     },
 }
@@ -43,7 +45,7 @@ export const AppContext = (props: PropsWithChildren<{}>): JSX.Element => {
 
         if (!update || !!update.files) {
             const resultFiles = await UploadApi.ReadAllFiles();
-            setState(x => ({...x, files: resultFiles.Files}));
+            setState(x => ({...x, files: resultFiles.Files, directory: resultFiles.Directory}));
         }
     }
 
