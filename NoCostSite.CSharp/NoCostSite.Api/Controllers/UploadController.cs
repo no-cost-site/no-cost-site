@@ -13,37 +13,37 @@ namespace NoCostSite.Api.Controllers
     {
         private readonly FilesUploader _filesUploader = new FilesUploader();
 
-        public async Task<object> UpsertPage(UploadUpsertPageRequest request)
+        public async Task<ResultResponse> UpsertPage(UploadUpsertPageRequest request)
         {
             await _filesUploader.UpsertPage(request.PageId);
             return ResultResponse.Ok();
         }
         
-        public async Task<object> UpsertFile(UploadUpsertFileRequest request)
+        public async Task<ResultResponse> UpsertFile(UploadUpsertFileRequest request)
         {
             await _filesUploader.UpsertFile(request.Url, request.FileName, request.Data);
             return ResultResponse.Ok();
         }
         
-        public async Task<object> UpsertTemplate(UploadUpsertTemplateRequest request)
+        public async Task<ResultResponse> UpsertTemplate(UploadUpsertTemplateRequest request)
         {
             await _filesUploader.UpsertTemplate(request.TemplateId);
             return ResultResponse.Ok();
         }
         
-        public async Task<object> ReadAllFiles()
+        public async Task<UploadReadAllFilesResponse> ReadAllFiles()
         {
             var files = await _filesUploader.ReadAllFiles();
             return UploadReadAllFilesResponse.Ok(files);
         }
 
-        public async Task<object> DeletePage(UploadDeletePageRequest request)
+        public async Task<ResultResponse> DeletePage(UploadDeletePageRequest request)
         {
             await _filesUploader.DeletePage(request.PageId);
             return ResultResponse.Ok();
         }
         
-        public async Task<object> DeleteFile(UploadDeleteFileRequest request)
+        public async Task<ResultResponse> DeleteFile(UploadDeleteFileRequest request)
         {
             await _filesUploader.DeleteFile(request.Url, request.FileName);
             return ResultResponse.Ok();

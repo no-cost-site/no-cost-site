@@ -9,7 +9,7 @@ namespace NoCostSite.Api.Controllers
     {
         private readonly TemplatesService _templatesService = new TemplatesService();
 
-        public async Task<object> Upsert(TemplatesUpsertRequest request)
+        public async Task<ResultResponse> Upsert(TemplatesUpsertRequest request)
         {
             var page = new Template
             {
@@ -22,19 +22,19 @@ namespace NoCostSite.Api.Controllers
             return ResultResponse.Ok();
         }
         
-        public async Task<object> ReadAll()
+        public async Task<TemplatesReadAllResponse> ReadAll()
         {
             var pages = await _templatesService.ReadAll();
             return TemplatesReadAllResponse.Ok(pages);
         }
 
-        public async Task<object> Read(TemplatesReadRequest request)
+        public async Task<TemplatesReadResponse> Read(TemplatesReadRequest request)
         {
             var page = await _templatesService.Read(request.Id);
             return TemplatesReadResponse.Ok(page);
         }
 
-        public async Task<object> Delete(TemplatesDeleteRequest request)
+        public async Task<ResultResponse> Delete(TemplatesDeleteRequest request)
         {
             await _templatesService.Delete(request.Id);
             return ResultResponse.Ok();

@@ -31,8 +31,10 @@ namespace NoCostSite.Function
                 var inputType = method.GetParameters().SingleOrDefault()?.ParameterType;
                 var inputs = inputType != null ? new[] {_requestContext.GetBody(inputType)} : null;
 
-                var task = method.Invoke(@class, inputs);
-                return await (task as Task<object>)!;
+                var task = (method.Invoke(@class, inputs) as Task)!;
+                await task;
+
+                return task.GetType().GetProperty("Result")!.GetValue(task)!;
             }
             catch (TargetInvocationException e)
             {

@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using NoCostSite.Api.Dto;
 using NoCostSite.Api.Dto.Pages;
 using NoCostSite.BusinessLogic.Pages;
 using NoCostSite.Function;
@@ -10,7 +9,7 @@ namespace NoCostSite.Api.Controllers
     {
         private readonly PagesService _pagesService = new PagesService();
 
-        public async Task<object> Upsert(PagesUpsertRequest request)
+        public async Task<ResultResponse> Upsert(PagesUpsertRequest request)
         {
             var page = new Page
             {
@@ -28,19 +27,19 @@ namespace NoCostSite.Api.Controllers
             return ResultResponse.Ok();
         }
         
-        public async Task<object> ReadAll()
+        public async Task<PagesReadAllResponse> ReadAll()
         {
             var pages = await _pagesService.ReadAll();
             return PagesReadAllResponse.Ok(pages);
         }
 
-        public async Task<object> Read(PagesReadRequest request)
+        public async Task<PagesReadResponse> Read(PagesReadRequest request)
         {
             var page = await _pagesService.Read(request.Id);
             return PagesReadResponse.Ok(page);
         }
 
-        public async Task<object> Delete(PagesDeleteRequest request)
+        public async Task<ResultResponse> Delete(PagesDeleteRequest request)
         {
             await _pagesService.Delete(request.Id);
             return ResultResponse.Ok();

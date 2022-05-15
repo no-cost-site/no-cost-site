@@ -9,7 +9,7 @@ namespace NoCostSite.Api.Controllers
     {
         private readonly SettingsService _settingsService = new SettingsService();
 
-        public async Task<object> Upsert(SettingsUpsertRequest request)
+        public async Task<ResultResponse> Upsert(SettingsUpsertRequest request)
         {
             var settings = new Settings
             {
@@ -20,7 +20,7 @@ namespace NoCostSite.Api.Controllers
             return ResultResponse.Ok();
         }
 
-        public async Task<object> Read()
+        public async Task<SettingsReadResponse> Read()
         {
             var settings = await _settingsService.Read();
             return SettingsReadResponse.Ok(settings);

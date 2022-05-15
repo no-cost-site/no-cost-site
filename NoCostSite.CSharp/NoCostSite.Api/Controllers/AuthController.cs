@@ -11,19 +11,19 @@ namespace NoCostSite.Api.Controllers
         private readonly AuthService _authService = new AuthService();
         private readonly UsersService _usersService = new UsersService();
 
-        public async Task<object> Login(AuthLoginRequest request)
+        public async Task<AuthLoginResponse> Login(AuthLoginRequest request)
         {
             var token = await _authService.Login(request.Password);
             return AuthLoginResponse.Ok(token);
         }
 
-        public async Task<object> Register(AuthRegisterRequest request)
+        public async Task<ResultResponse> Register(AuthRegisterRequest request)
         {
             await _usersService.Create(request.Password, request.PasswordConfirm);
             return ResultResponse.Ok();
         }
 
-        public async Task<object> IsInit()
+        public async Task<AuthIsInitResponse> IsInit()
         {
             var userExists = await _usersService.Exists();
             return AuthIsInitResponse.Ok(userExists);

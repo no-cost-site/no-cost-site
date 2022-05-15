@@ -11,7 +11,7 @@ namespace NoCostSite.Api.Controllers
     {
         private readonly UsersService _usersService = new UsersService();
 
-        public async Task<object> ChangePassword(UsersChangePasswordRequest request)
+        public async Task<ResultResponse> ChangePassword(UsersChangePasswordRequest request)
         {
             await _usersService.ChangePassword(request.OldPassword, request.NewPassword, request.PasswordConfirm);
             return ResultResponse.Ok();
