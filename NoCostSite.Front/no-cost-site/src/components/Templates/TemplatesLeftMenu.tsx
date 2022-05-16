@@ -3,21 +3,17 @@ import {Context} from "../Context/AppContext";
 import {IconType, LeftMenu as LeftMenuUI} from "../../controls";
 import {TemplateItemDto} from "../../Api/dto";
 import {useNavigate} from "react-router-dom";
-import {TemplatesApi} from "../../Api";
 
 export const TemplatesLeftMenu = (): JSX.Element => {
     const navigate = useNavigate();
-    const {templates, readAll} = React.useContext(Context);
+    const {templates} = React.useContext(Context);
 
     const onClick = (template: TemplateItemDto) => {
         navigate(`/templates/template/${template!.Id}`);
     }
 
     const onCreate = async () => {
-        await TemplatesApi.Upsert({
-            Template: {Name: "NewTemplate", Content: "<!-- Content -->"} as any
-        });
-        await readAll({templates: true});
+        navigate("/templates/template/create");
     }
 
     return (

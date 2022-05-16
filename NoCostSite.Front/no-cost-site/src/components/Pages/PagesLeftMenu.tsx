@@ -3,21 +3,17 @@ import {Context} from "../Context/AppContext";
 import {IconType, LeftMenu as LeftMenuUI} from "../../controls";
 import {PageItemDto} from "../../Api/dto";
 import {useNavigate} from "react-router-dom";
-import {PagesApi} from "../../Api";
 
 export const PagesLeftMenu = (): JSX.Element => {
     const navigate = useNavigate();
-    const {pages, templates, readAll} = React.useContext(Context);
+    const {pages} = React.useContext(Context);
 
     const onClick = (page: PageItemDto) => {
         navigate(`/pages/page/${page!.Id}`);
     }
 
     const onCreate = async () => {
-        await PagesApi.Upsert({
-            Page: {Name: "NewPage", TemplateId: templates[0].Id, Url: ""} as any
-        });
-        await readAll({pages: true});
+        navigate("/pages/page/create");
     }
 
     return (

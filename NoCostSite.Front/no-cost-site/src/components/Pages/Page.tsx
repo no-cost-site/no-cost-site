@@ -4,14 +4,28 @@ import {PageDto} from "../../Api/dto";
 import {PagesApi, UploadApi} from "../../Api";
 import {Button, Form, Input, Loader, HtmlEditor, Select} from "../../controls";
 import {Context} from "../Context/AppContext";
+import {Guid} from "../../utils";
 
 const pageStyles = {
     maxWidth: "100%",
 }
 
+const newPage: PageDto = {
+    Id: "",
+    TemplateId: "",
+    Name: "Page name",
+    Url: "",
+    Title: "",
+    Description: "",
+    Keywords: "",
+    Content: "",
+}
+
 export const Page = (): JSX.Element => {
     const navigate = useNavigate();
     const pageId = useParams().pageId;
+    const isCreate = pageId === "create";
+
     const {templates, readAll} = React.useContext(Context);
     const [page, setPage] = useState<PageDto | null>(null);
     const [currentPage, setCurrentPage] = useState<PageDto | null>(null);
@@ -30,9 +44,15 @@ export const Page = (): JSX.Element => {
     }
 
     const read = async (): Promise<void> => {
-        const response = await PagesApi.Read({Id: pageId!});
-        setPage(response.Page);
-        setCurrentPage(response.Page);
+        if (isCreate) {
+            const createPage = {...newPage, Id: Guid.new(), TemplateId: templates[0].Id};
+            setPage(createPage);
+            setCurrentPage(createPage);
+        } else {
+            const response = await PagesApi.Read({Id: pageId!});
+            setPage(response.Page);
+            setCurrentPage(response.Page);
+        }
     }
 
     const saveAdnPublish = async (): Promise<void> => {
@@ -45,6 +65,10 @@ export const Page = (): JSX.Element => {
             await UploadApi.UpsertPage({PageId: page!.Id});
             await readAll({pages: true, files: true});
             setCurrentPage(page!);
+
+            if (isCreate) {
+                navigate(`/pages/page/${page!.Id}`)
+            }
         })
     }
 
@@ -52,6 +76,10 @@ export const Page = (): JSX.Element => {
         await inLock(async () => {
             await PagesApi.Upsert({Page: page!});
             await readAll({pages: true});
+
+            if (isCreate) {
+                navigate(`/pages/page/${page!.Id}`)
+            }
         })
     }
 
@@ -109,10 +137,23 @@ export const Page = (): JSX.Element => {
                     <HtmlEditor name="Content" value={page.Content} onChange={onChangeState}/>
                 </Form.Input>
                 <Form.Buttons>
-                    <Button name="save-and-publish" text="Save and publish" loading={lock} onClick={saveAdnPublish}/>
-                    <Button name="save" text="Save draft" type="default" loading={lock} onClick={save}/>
-                    <Button name="open" text="Open on site" type="link" onClick={open}/>
-                    <Button name="delete" text="Delete" type="subtle" loading={lock} onClick={deletePage}/>
+                    {isCreate && (
+                        <>
+                            <Button name="create-and-publish" text="Create and publish" loading={lock}
+                                    onClick={saveAdnPublish}/>
+                            <Button name="create" text="Create draft" type="default" loading={lock} onClick={save}/>
+                        </>
+                    )}
+                    {!isCreate && (
+                        <>
+                            <Button name="save-and-publish" text="Save and publish" loading={lock}
+                                    onClick={saveAdnPublish}/>
+                            <Button name="save" text="Save draft" type="default" loading={lock} onClick={save}/>
+                            <Button name="open" text="Open on site" type="link" loading={lock} onClick={open}/>
+                            <Button name="delete" text="Delete" type="subtle" loading={lock} onClick={deletePage}/>
+                        </>
+                    )}
+
                 </Form.Buttons>
             </Form>
         </>
