@@ -56,6 +56,7 @@ namespace NoCostSite.Api.Dto.Upload
             var names = paths
                 .Where(x => StartWith(x, currentPath))
                 .Select(x => x[currentPath.Length])
+                .Distinct()
                 .OrderBy(x => x);
 
             foreach (var name in names)
