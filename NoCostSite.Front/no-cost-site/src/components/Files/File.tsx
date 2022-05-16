@@ -4,14 +4,24 @@ import {FileDto} from "../../Api/dto";
 import {UploadApi} from "../../Api";
 import {Button, Form, Input, Loader, HtmlEditor} from "../../controls";
 import {Context} from "../Context/AppContext";
+import {Guid} from "../../utils";
 
 const pageStyles = {
     maxWidth: "100%",
 }
 
+const newFile: FileDto = {
+    Id: "",
+    Url: "",
+    Name: "FileName",
+    Content: "",
+}
+
 export const File = (): JSX.Element => {
     const navigate = useNavigate();
     const fileId = useParams().fileId;
+    const isCreate = fileId === "create";
+
     const {files, readAll} = React.useContext(Context);
     const [file, setFile] = useState<FileDto | null>(null);
     const [currentFile, setCurrentFile] = useState<FileDto | null>(null);
@@ -30,6 +40,13 @@ export const File = (): JSX.Element => {
     }
 
     const read = async (): Promise<void> => {
+        if (isCreate) {
+            const createFile = {...newFile, Id: Guid.new()};
+            setFile(createFile);
+            setCurrentFile(createFile);
+            return;
+        }
+
         const fileItem = files.filter(x => x.Id === fileId)[0];
         if (!fileItem) {
             navigate("/files");
@@ -42,12 +59,16 @@ export const File = (): JSX.Element => {
 
     const upload = async (): Promise<void> => {
         await inLock(async () => {
-            if (currentFile!.Url !== file!.Url || currentFile!.Name !== file!.Name) {
+            if (!isCreate && (currentFile!.Url !== file!.Url || currentFile!.Name !== file!.Name)) {
                 await UploadApi.DeleteFile({Url: currentFile!.Url, FileName: currentFile!.Name});
             }
             await UploadApi.UpsertFileContent({Url: file!.Url, FileName: file!.Name, Content: file!.Content});
             await readAll({files: true});
             setCurrentFile(file!);
+
+            if (isCreate) {
+                navigate("/files");
+            }
         })
     }
 
@@ -91,9 +112,16 @@ export const File = (): JSX.Element => {
                     <HtmlEditor name="Content" value={file.Content} onChange={onChangeState}/>
                 </Form.Input>
                 <Form.Buttons>
-                    <Button name="upload" text="Upload" loading={lock} onClick={upload}/>
-                    <Button name="delete" text="Delete" type="subtle" loading={lock} onClick={deleteFile}/>
-                    <Button name="open" text="Open on site" type="link" onClick={open}/>
+                    {isCreate && (
+                        <Button name="upload" text="Create" loading={lock} onClick={upload}/>
+                    )}
+                    {!isCreate && (
+                        <>
+                            <Button name="upload" text="Save" loading={lock} onClick={upload}/>
+                            <Button name="delete" text="Delete" type="subtle" loading={lock} onClick={deleteFile}/>
+                            <Button name="open" text="Open on site" type="link" onClick={open}/>
+                        </>
+                    )}
                 </Form.Buttons>
             </Form>
         </>

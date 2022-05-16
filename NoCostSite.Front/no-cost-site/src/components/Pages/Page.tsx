@@ -48,16 +48,17 @@ export const Page = (): JSX.Element => {
             const createPage = {...newPage, Id: Guid.new(), TemplateId: templates[0].Id};
             setPage(createPage);
             setCurrentPage(createPage);
-        } else {
-            const response = await PagesApi.Read({Id: pageId!});
-            setPage(response.Page);
-            setCurrentPage(response.Page);
+            return;
         }
+
+        const response = await PagesApi.Read({Id: pageId!});
+        setPage(response.Page);
+        setCurrentPage(response.Page);
     }
 
     const saveAdnPublish = async (): Promise<void> => {
         await inLock(async () => {
-            if (currentPage!.Url !== page!.Url) {
+            if (!isCreate && currentPage!.Url !== page!.Url) {
                 await UploadApi.DeletePage({PageId: page!.Id})
             }
 

@@ -3,19 +3,17 @@ import {Context} from "../Context/AppContext";
 import {IconType, LeftMenu as LeftMenuUI} from "../../controls";
 import {DirectoryDto, FileItemDto} from "../../Api/dto";
 import {useNavigate} from "react-router-dom";
-import {UploadApi} from "../../Api";
 
 export const FilesLeftMenu = (): JSX.Element => {
     const navigate = useNavigate();
-    const {files, directory, readAll} = React.useContext(Context);
+    const {files, directory} = React.useContext(Context);
 
     const onClick = (file: FileItemDto) => {
         navigate(`/files/file/${file!.Id}`);
     }
 
     const onCreate = async () => {
-        await UploadApi.UpsertFileContent({FileName: "NewFile", Url: "", Content: ""});
-        await readAll({files: true});
+        navigate("/files/file/create");
     }
 
     return (

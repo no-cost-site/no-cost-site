@@ -40,10 +40,11 @@ export const Template = (): JSX.Element => {
     const read = async (): Promise<void> => {
         if (isCreate) {
             setTemplate({...newTemplate, Id: Guid.new()});
-        } else {
-            const response = await TemplatesApi.Read({Id: templateId!});
-            setTemplate(response.Template);
+            return;
         }
+
+        const response = await TemplatesApi.Read({Id: templateId!});
+        setTemplate(response.Template);
     }
 
     const saveAdnPublish = async (): Promise<void> => {
