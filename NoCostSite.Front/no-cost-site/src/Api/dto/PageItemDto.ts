@@ -1,4 +1,5 @@
 export interface PageItemDto {
    Id: string;
-   Name: string
+   Name: string;
+   Url: string
 }

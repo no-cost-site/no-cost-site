@@ -1,5 +1,6 @@
-import { PageItemDto } from "./"
+import { PageItemDto, DirectoryDto } from "./"
 
 export interface PagesReadAllResponse {
-   Items: PageItemDto[]
+   Items: PageItemDto[];
+   Directory: DirectoryDto
 }
