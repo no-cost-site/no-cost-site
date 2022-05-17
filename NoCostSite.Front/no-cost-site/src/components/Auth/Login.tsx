@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, Form, Password} from "../../controls";
-import {TokenContainer} from "../../utils";
+import {TokenContainer, Lock} from "../../utils";
 import {AuthApi} from "../../Api";
 
 interface Props {
@@ -19,20 +19,8 @@ export const Login = (props: Props): JSX.Element => {
         setState(x => ({...x, [name!]: value}));
     }
 
-    const inLock = async (action: () => Promise<void>): Promise<void> => {
-        setLock(true);
-
-        try {
-            await action();
-        } catch (e) {
-            console.log(e);
-        }
-
-        setLock(false);
-    }
-
     const login = async () => {
-        await inLock(async () => {
+        await Lock.in(async () => {
             const responseLogin = await AuthApi.Login({
                 Password: state.password
             });
@@ -40,7 +28,7 @@ export const Login = (props: Props): JSX.Element => {
             TokenContainer.set(responseLogin.Token);
 
             props.onLogin();
-        })
+        }, setLock)
     }
 
     return (
