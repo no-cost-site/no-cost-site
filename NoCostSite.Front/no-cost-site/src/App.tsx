@@ -17,7 +17,10 @@ import {
     FilesLeftMenu,
     FileUpload,
     FileCreate,
-    FileUploadZip
+    FileUploadZip,
+    ChangePassword,
+    AccountLeftMenu,
+    Account
 } from "./components";
 
 function App() {
@@ -27,6 +30,8 @@ function App() {
                 <HashRouter>
                     <Routes>
                         <Route path="/" element={<Navigate to="/pages"/>}/>
+                        <Route path="/account" element={<Body body={<Account/>} leftMenu={<AccountLeftMenu/>}/>}/>
+                        <Route path="/account/changePassword" element={<Body body={<ChangePassword/>} leftMenu={<AccountLeftMenu/>}/>}/>
                         <Route path="/pages" element={<Body body={<Pages/>} leftMenu={<PagesLeftMenu/>}/>}/>
                         <Route path="/pages/create" element={<Body body={<PageCreate/>} leftMenu={<PagesLeftMenu/>}/>}/>
                         <Route path="/pages/page/:pageId" element={<Body body={<Page/>} leftMenu={<PagesLeftMenu/>}/>}/>

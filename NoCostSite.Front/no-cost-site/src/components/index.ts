@@ -6,3 +6,4 @@ export * from "./Body";
 export * from "./TopMenu";
 export * from "./Templates";
 export * from "./Files";
+export * from "./Account";

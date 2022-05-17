@@ -12,6 +12,7 @@ export const LeftNavbar = (): JSX.Element => {
                 <LeftNavbarUI.Item icon={IconType.Page} onClick={() => navigate("/pages")}>Pages</LeftNavbarUI.Item>
                 <LeftNavbarUI.Item icon={IconType.Code} onClick={() => navigate("/templates")}>Templates</LeftNavbarUI.Item>
                 <LeftNavbarUI.Item icon={IconType.Tree} onClick={() => navigate("/files")}>Files</LeftNavbarUI.Item>
+                <LeftNavbarUI.Item icon={IconType.Admin} onClick={() => navigate("/account")}>Account</LeftNavbarUI.Item>
             </LeftNavbarUI>
         </Show.OnDesktop>
     )
