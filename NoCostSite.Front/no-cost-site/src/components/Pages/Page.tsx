@@ -92,7 +92,7 @@ export const Page = (): JSX.Element => {
         await inLock(async () => {
             await UploadApi.DeletePage({PageId: page!.Id});
             await PagesApi.Delete({Id: page!.Id});
-            await readAll({pages: true});
+            await readAll({pages: true, files: true});
             navigate("/pages")
         })
     }
