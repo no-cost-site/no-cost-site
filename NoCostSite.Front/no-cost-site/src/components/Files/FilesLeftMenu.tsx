@@ -13,7 +13,11 @@ export const FilesLeftMenu = (): JSX.Element => {
     }
 
     const onCreate = async () => {
-        navigate("/files/file/create");
+        navigate("/files/create");
+    }
+
+    const onUpload = async () => {
+        navigate("/files/upload");
     }
 
     return (
@@ -28,6 +32,7 @@ export const FilesLeftMenu = (): JSX.Element => {
                 />
             </LeftMenuUI.Tree>
             <LeftMenuUI.ItemMain onClick={onCreate} icon={IconType.Plus}>Create new</LeftMenuUI.ItemMain>
+            <LeftMenuUI.ItemMain onClick={onUpload} icon={IconType.Import}>Upload file</LeftMenuUI.ItemMain>
         </LeftMenuUI>
     )
 }

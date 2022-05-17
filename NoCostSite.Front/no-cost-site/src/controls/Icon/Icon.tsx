@@ -17,6 +17,8 @@ import {
     Minus,
     ArrowRightLine,
     ArrowRight,
+    FileUpload,
+    Import,
 } from "@rsuite/icons";
 import {HtmlProps} from "../../utils";
 
@@ -38,6 +40,8 @@ export enum IconType {
     Minus,
     ArrowRightLine,
     ArrowRight,
+    FileUpload,
+    Import,
 }
 
 interface IconProps {
@@ -84,6 +88,10 @@ export const Icon = (props: IconProps & HtmlProps) => {
             return <ArrowRightLine {...props}/>;
         case IconType.ArrowRight:
             return <ArrowRight {...props}/>;
+        case IconType.FileUpload:
+            return <FileUpload {...props}/>;
+        case IconType.Import:
+            return <Import {...props}/>;
         default:
             throw new Error(`Icon ${props.type} not found`);
     }

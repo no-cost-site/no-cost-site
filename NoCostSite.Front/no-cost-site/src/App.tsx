@@ -12,7 +12,9 @@ import {
     Template,
     Files,
     File,
-    FilesLeftMenu
+    FilesLeftMenu,
+    FileUpload,
+    FileCreate
 } from "./components";
 
 function App() {
@@ -27,6 +29,8 @@ function App() {
                         <Route path="/templates" element={<Body body={<Templates/>} leftMenu={<TemplatesLeftMenu/>}/>}/>
                         <Route path="/templates/template/:templateId" element={<Body body={<Template/>} leftMenu={<TemplatesLeftMenu/>}/>}/>
                         <Route path="/files" element={<Body body={<Files/>} leftMenu={<FilesLeftMenu/>}/>}/>
+                        <Route path="/files/create" element={<Body body={<FileCreate/>} leftMenu={<FilesLeftMenu/>}/>}/>
+                        <Route path="/files/upload" element={<Body body={<FileUpload/>} leftMenu={<FilesLeftMenu/>}/>}/>
                         <Route path="/files/file/:fileId" element={<Body body={<File/>} leftMenu={<FilesLeftMenu/>}/>}/>
                     </Routes>
                 </HashRouter>
