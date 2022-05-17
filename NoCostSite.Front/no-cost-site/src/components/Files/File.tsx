@@ -4,6 +4,7 @@ import {FileDto} from "../../Api/dto";
 import {UploadApi} from "../../Api";
 import {Button, Form, Input, Loader, HtmlEditor, Upload} from "../../controls";
 import {Context} from "../Context/AppContext";
+import {Lock} from "../../utils";
 
 const pageStyles = {
     maxWidth: "100%",
@@ -18,18 +19,6 @@ export const File = (): JSX.Element => {
     const [currentFile, setCurrentFile] = useState<FileDto | null>(null);
     const [lock, setLock] = React.useState<boolean>(false);
 
-    const inLock = async (action: () => Promise<void>): Promise<void> => {
-        setLock(true);
-
-        try {
-            await action();
-        } catch (e) {
-            console.log(e);
-        }
-
-        setLock(false);
-    }
-
     const read = async (): Promise<void> => {
         const fileItem = files.filter(x => x.Id === fileId)[0];
         if (!fileItem) {
@@ -42,25 +31,25 @@ export const File = (): JSX.Element => {
     }
 
     const upload = async (): Promise<void> => {
-        await inLock(async () => {
+        await Lock.in(async () => {
             if (currentFile!.Url !== file!.Url || currentFile!.Name !== file!.Name) {
                 await UploadApi.DeleteFile({Url: currentFile!.Url, FileName: currentFile!.Name});
             }
             await UploadApi.UpsertFileContent({Url: file!.Url, FileName: file!.Name, Content: file!.Content});
             await readAll({files: true});
             setCurrentFile(file!);
-        })
+        }, setLock)
     }
 
     const uploadFile = async (data: number[]): Promise<void> => {
-        await inLock(async () => {
+        await Lock.in(async () => {
             if (currentFile!.Url !== file!.Url || currentFile!.Name !== file!.Name) {
                 await UploadApi.DeleteFile({Url: currentFile!.Url, FileName: currentFile!.Name});
             }
             await UploadApi.UpsertFile({Url: file!.Url, FileName: file!.Name, Data: data});
             await readAll({files: true});
             await read();
-        })
+        }, setLock)
     }
 
     const open = () => {
@@ -69,11 +58,11 @@ export const File = (): JSX.Element => {
     }
 
     const deleteFile = async (): Promise<void> => {
-        await inLock(async () => {
+        await Lock.in(async () => {
             await UploadApi.DeleteFile({Url: file!.Url, FileName: file!.Name});
             await readAll({files: true});
             navigate("/files");
-        })
+        }, setLock)
     }
 
     const onChangeState = (value: string, name?: string) => {

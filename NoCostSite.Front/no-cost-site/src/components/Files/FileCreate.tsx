@@ -4,6 +4,7 @@ import {FileDto} from "../../Api/dto";
 import {UploadApi} from "../../Api";
 import {Button, Form, Input, HtmlEditor} from "../../controls";
 import {Context} from "../Context/AppContext";
+import {Lock} from "../../utils";
 
 const pageStyles = {
     maxWidth: "100%",
@@ -22,24 +23,12 @@ export const FileCreate = (): JSX.Element => {
     const [file, setFile] = useState<FileDto>({...newFile});
     const [lock, setLock] = React.useState<boolean>(false);
 
-    const inLock = async (action: () => Promise<void>): Promise<void> => {
-        setLock(true);
-
-        try {
-            await action();
-        } catch (e) {
-            console.log(e);
-        }
-
-        setLock(false);
-    }
-
     const upload = async (): Promise<void> => {
-        await inLock(async () => {
+        await Lock.in(async () => {
             const response = await UploadApi.UpsertFileContent({Url: file!.Url, FileName: file!.Name, Content: file!.Content});
             await readAll({files: true});
             navigate(`/files/file/${response.FileId}`);
-        })
+        }, setLock)
     }
 
     const onChangeState = (value: string, name?: string) => {

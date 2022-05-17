@@ -4,7 +4,7 @@ import {TemplateDto} from "../../Api/dto";
 import {TemplatesApi, UploadApi} from "../../Api";
 import {Button, Form, Input, Loader, HtmlEditor} from "../../controls";
 import {Context} from "../Context/AppContext";
-import {Guid} from "../../utils";
+import {Guid, Lock} from "../../utils";
 
 const pageStyles = {
     maxWidth: "100%",
@@ -25,18 +25,6 @@ export const Template = (): JSX.Element => {
     const [template, setTemplate] = useState<TemplateDto | null>(null);
     const [lock, setLock] = React.useState<boolean>(false);
 
-    const inLock = async (action: () => Promise<void>): Promise<void> => {
-        setLock(true);
-
-        try {
-            await action();
-        } catch (e) {
-            console.log(e);
-        }
-
-        setLock(false);
-    }
-
     const read = async (): Promise<void> => {
         if (isCreate) {
             setTemplate({...newTemplate, Id: Guid.new()});
@@ -48,30 +36,30 @@ export const Template = (): JSX.Element => {
     }
 
     const saveAdnPublish = async (): Promise<void> => {
-        await inLock(async () => {
+        await Lock.in(async () => {
             await TemplatesApi.Upsert({Template: template!});
             await UploadApi.UpsertTemplate({TemplateId: template!.Id});
             await readAll({templates: true});
-        })
+        }, setLock)
     }
 
     const save = async (): Promise<void> => {
-        await inLock(async () => {
+        await Lock.in(async () => {
             await TemplatesApi.Upsert({Template: template!});
             await readAll({templates: true});
 
             if (isCreate) {
                 navigate(`/templates/template/${template!.Id}`)
             }
-        })
+        }, setLock)
     }
 
     const deleteTemplate = async (): Promise<void> => {
-        await inLock(async () => {
+        await Lock.in(async () => {
             await TemplatesApi.Delete({Id: template!.Id});
             await readAll({templates: true});
             navigate("/templates")
-        })
+        }, setLock)
     }
 
     const onChangeState = (value: string, name?: string) => {

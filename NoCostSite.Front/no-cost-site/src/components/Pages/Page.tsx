@@ -4,7 +4,7 @@ import {PageDto} from "../../Api/dto";
 import {PagesApi, UploadApi} from "../../Api";
 import {Button, Form, Input, Loader, HtmlEditor, Select} from "../../controls";
 import {Context} from "../Context/AppContext";
-import {Guid} from "../../utils";
+import {Guid, Lock} from "../../utils";
 
 const pageStyles = {
     maxWidth: "100%",
@@ -31,18 +31,6 @@ export const Page = (): JSX.Element => {
     const [currentPage, setCurrentPage] = useState<PageDto | null>(null);
     const [lock, setLock] = React.useState<boolean>(false);
 
-    const inLock = async (action: () => Promise<void>): Promise<void> => {
-        setLock(true);
-
-        try {
-            await action();
-        } catch (e) {
-            console.log(e);
-        }
-
-        setLock(false);
-    }
-
     const read = async (): Promise<void> => {
         if (isCreate) {
             const createPage = {...newPage, Id: Guid.new(), TemplateId: templates[0].Id};
@@ -57,7 +45,7 @@ export const Page = (): JSX.Element => {
     }
 
     const saveAdnPublish = async (): Promise<void> => {
-        await inLock(async () => {
+        await Lock.in(async () => {
             if (!isCreate && currentPage!.Url !== page!.Url) {
                 await UploadApi.DeletePage({PageId: page!.Id})
             }
@@ -70,18 +58,18 @@ export const Page = (): JSX.Element => {
             if (isCreate) {
                 navigate(`/pages/page/${page!.Id}`)
             }
-        })
+        }, setLock)
     }
 
     const save = async (): Promise<void> => {
-        await inLock(async () => {
+        await Lock.in(async () => {
             await PagesApi.Upsert({Page: page!});
             await readAll({pages: true});
 
             if (isCreate) {
                 navigate(`/pages/page/${page!.Id}`)
             }
-        })
+        }, setLock)
     }
 
     const open = () => {
@@ -89,12 +77,12 @@ export const Page = (): JSX.Element => {
     }
 
     const deletePage = async (): Promise<void> => {
-        await inLock(async () => {
+        await Lock.in(async () => {
             await UploadApi.DeletePage({PageId: page!.Id});
             await PagesApi.Delete({Id: page!.Id});
             await readAll({pages: true, files: true});
             navigate("/pages")
-        })
+        }, setLock)
     }
 
     const onChangeState = (value: string, name?: string) => {
