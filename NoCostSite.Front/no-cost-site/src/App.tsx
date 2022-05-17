@@ -10,6 +10,7 @@ import {
     Templates,
     TemplatesLeftMenu,
     Template,
+    TemplateCreate,
     Files,
     File,
     FilesLeftMenu,
@@ -27,6 +28,7 @@ function App() {
                         <Route path="/pages" element={<Body body={<Pages/>} leftMenu={<PagesLeftMenu/>}/>}/>
                         <Route path="/pages/page/:pageId" element={<Body body={<Page/>} leftMenu={<PagesLeftMenu/>}/>}/>
                         <Route path="/templates" element={<Body body={<Templates/>} leftMenu={<TemplatesLeftMenu/>}/>}/>
+                        <Route path="/templates/create" element={<Body body={<TemplateCreate/>} leftMenu={<TemplatesLeftMenu/>}/>}/>
                         <Route path="/templates/template/:templateId" element={<Body body={<Template/>} leftMenu={<TemplatesLeftMenu/>}/>}/>
                         <Route path="/files" element={<Body body={<Files/>} leftMenu={<FilesLeftMenu/>}/>}/>
                         <Route path="/files/create" element={<Body body={<FileCreate/>} leftMenu={<FilesLeftMenu/>}/>}/>

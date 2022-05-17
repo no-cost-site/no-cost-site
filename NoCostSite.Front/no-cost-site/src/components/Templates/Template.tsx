@@ -4,33 +4,21 @@ import {TemplateDto} from "../../Api/dto";
 import {TemplatesApi, UploadApi} from "../../Api";
 import {Button, Form, Input, Loader, HtmlEditor} from "../../controls";
 import {Context} from "../Context/AppContext";
-import {Guid, Lock} from "../../utils";
+import {Lock} from "../../utils";
 
 const pageStyles = {
     maxWidth: "100%",
 }
 
-const newTemplate: TemplateDto = {
-    Id: "",
-    Name: "Template name",
-    Content: "<!-- Content -->",
-}
-
 export const Template = (): JSX.Element => {
     const navigate = useNavigate();
     const templateId = useParams().templateId;
-    const isCreate = templateId === "create";
 
     const {readAll} = React.useContext(Context);
     const [template, setTemplate] = useState<TemplateDto | null>(null);
     const [lock, setLock] = React.useState<boolean>(false);
 
     const read = async (): Promise<void> => {
-        if (isCreate) {
-            setTemplate({...newTemplate, Id: Guid.new()});
-            return;
-        }
-
         const response = await TemplatesApi.Read({Id: templateId!});
         setTemplate(response.Template);
     }
@@ -47,10 +35,6 @@ export const Template = (): JSX.Element => {
         await Lock.in(async () => {
             await TemplatesApi.Upsert({Template: template!});
             await readAll({templates: true});
-
-            if (isCreate) {
-                navigate(`/templates/template/${template!.Id}`)
-            }
         }, setLock)
     }
 
@@ -89,17 +73,9 @@ export const Template = (): JSX.Element => {
                     <HtmlEditor name="Content" value={template.Content} onChange={onChangeState}/>
                 </Form.Input>
                 <Form.Buttons>
-                    {isCreate && (
-                        <Button name="create" text="Create" loading={lock} onClick={save}/>
-                    )}
-                    {!isCreate && (
-                        <>
-                            <Button name="save-and-publish" text="Save and publish" loading={lock}
-                                    onClick={saveAdnPublish}/>
-                            <Button name="save" text="Save draft" type="default" loading={lock} onClick={save}/>
-                            <Button name="delete" text="Delete" type="subtle" loading={lock} onClick={deleteTemplate}/>
-                        </>
-                    )}
+                    <Button name="save-and-publish" text="Save and publish" loading={lock} onClick={saveAdnPublish}/>
+                    <Button name="save" text="Save draft" type="default" loading={lock} onClick={save}/>
+                    <Button name="delete" text="Delete" type="subtle" loading={lock} onClick={deleteTemplate}/>
                 </Form.Buttons>
             </Form>
         </>

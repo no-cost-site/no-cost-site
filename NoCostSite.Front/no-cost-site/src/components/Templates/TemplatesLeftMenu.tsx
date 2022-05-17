@@ -13,7 +13,7 @@ export const TemplatesLeftMenu = (): JSX.Element => {
     }
 
     const onCreate = async () => {
-        navigate("/templates/template/create");
+        navigate("/templates/create");
     }
 
     return (
