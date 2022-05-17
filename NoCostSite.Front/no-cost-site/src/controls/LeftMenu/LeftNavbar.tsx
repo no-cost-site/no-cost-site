@@ -1,6 +1,14 @@
 import React, {PropsWithChildren} from "react";
-import {Nav, Sidenav} from "rsuite";
+import {Affix, Nav, Sidenav} from "rsuite";
 import {IconType, Icon} from "../Icon";
+
+const affixStyles = {
+    maxWidth: 56,
+}
+
+const menuStyles = {
+    height: "100%",
+}
 
 const headerStyles = {
     padding: 18,
@@ -45,13 +53,15 @@ export class LeftNavbar extends React.Component<PropsWithChildren<{}>> {
 
     public render(): JSX.Element {
         return (
-            <Sidenav expanded={false} appearance="inverse">
-                <Sidenav.Body>
-                    <Nav>
-                        {this.props.children}
-                    </Nav>
-                </Sidenav.Body>
-            </Sidenav>
+            <Affix style={affixStyles} className="height-100">
+                <Sidenav expanded={false} appearance="inverse" style={menuStyles}>
+                    <Sidenav.Body>
+                        <Nav>
+                            {this.props.children}
+                        </Nav>
+                    </Sidenav.Body>
+                </Sidenav>
+            </Affix>
         );
     }
 }

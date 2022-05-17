@@ -1,12 +1,18 @@
 import React, {PropsWithChildren} from "react";
-import {Dropdown, Nav, Sidebar, Sidenav} from "rsuite";
+import {Affix, Dropdown, Nav, Sidebar, Sidenav} from "rsuite";
 import {Icon, IconType} from "../Icon";
 import {HtmlProps} from "../../utils";
+
+const affixStyles = {
+    maxWidth: 350,
+}
 
 const leftMenuStyles = {
     backgroundColor: "#f7f7fa",
     width: 350,
     flex: "0 0 350px",
+    height: "100%",
+    overflow: "auto",
 };
 
 const headerStyles = {
@@ -135,15 +141,17 @@ export class LeftMenu extends React.Component<PropsWithChildren<HtmlProps>> {
 
     public render(): JSX.Element {
         return (
-            <Sidebar style={{...leftMenuStyles, ...this.props.style}}>
-                <Sidenav defaultOpenKeys={['1']}>
-                    <Sidenav.Body>
-                        <Nav>
-                            {this.props.children}
-                        </Nav>
-                    </Sidenav.Body>
-                </Sidenav>
-            </Sidebar>
+            <Affix style={affixStyles} className="height-100">
+                <Sidebar style={{...leftMenuStyles, ...this.props.style}}>
+                    <Sidenav defaultOpenKeys={['1']}>
+                        <Sidenav.Body>
+                            <Nav>
+                                {this.props.children}
+                            </Nav>
+                        </Sidenav.Body>
+                    </Sidenav>
+                </Sidebar>
+            </Affix>
         );
     }
 }
