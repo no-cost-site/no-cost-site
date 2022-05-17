@@ -11,17 +11,19 @@ interface IContextReadAll {
 
 interface IContext {
     pages: PageItemDto[];
+    pagesDirectory: DirectoryDto;
     templates: TemplateItemDto[];
     files: FileItemDto[];
-    directory: DirectoryDto;
+    filesDirectory: DirectoryDto;
     readAll: (update?: IContextReadAll) => Promise<void>;
 }
 
 const defaultContext: IContext = {
     pages: [],
+    pagesDirectory: {} as any,
     templates: [],
     files: [],
-    directory: {} as any,
+    filesDirectory: {} as any,
     readAll: async () => {
     },
 }
@@ -35,7 +37,7 @@ export const AppContext = (props: PropsWithChildren<{}>): JSX.Element => {
     const readAll = async (update?: IContextReadAll): Promise<void> => {
         if (!update || !!update.pages) {
             const resultPages = await PagesApi.ReadAll();
-            setState(x => ({...x, pages: resultPages.Items}));
+            setState(x => ({...x, pages: resultPages.Items, pagesDirectory: resultPages.Directory}));
         }
 
         if (!update || !!update.templates) {
@@ -45,7 +47,7 @@ export const AppContext = (props: PropsWithChildren<{}>): JSX.Element => {
 
         if (!update || !!update.files) {
             const resultFiles = await UploadApi.ReadAllFiles();
-            setState(x => ({...x, files: resultFiles.Files, directory: resultFiles.Directory}));
+            setState(x => ({...x, files: resultFiles.Files, filesDirectory: resultFiles.Directory}));
         }
     }
 

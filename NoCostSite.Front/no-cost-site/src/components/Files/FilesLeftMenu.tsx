@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 
 export const FilesLeftMenu = (): JSX.Element => {
     const navigate = useNavigate();
-    const {files, directory} = React.useContext(Context);
+    const {files, filesDirectory} = React.useContext(Context);
 
     const onClick = (file: FileItemDto) => {
         navigate(`/files/file/${file!.Id}`);
@@ -30,8 +30,8 @@ export const FilesLeftMenu = (): JSX.Element => {
             <LeftMenuUI.Tree header="/">
                 <FilesLeftMenuItems
                     files={files}
-                    directories={directory.Child}
-                    url={directory.Url}
+                    directories={filesDirectory.Child}
+                    url={filesDirectory.Url}
                     onClick={onClick}
                 />
             </LeftMenuUI.Tree>
