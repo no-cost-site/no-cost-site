@@ -71,7 +71,7 @@ export const Page = (): JSX.Element => {
     }, [pageId]);
 
     if (!page) {
-        return <Loader.Center/>;
+        return <Loader.Placeholder graph="square"/>;
     }
 
     const templateValues = templates.map(x => ({text: x.Name, value: x.Id}));

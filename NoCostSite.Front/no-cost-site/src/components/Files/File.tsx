@@ -76,7 +76,7 @@ export const File = (): JSX.Element => {
     }, [fileId]);
 
     if (!file) {
-        return <Loader.Center/>;
+        return <Loader.Placeholder graph="square"/>;
     }
 
     return (

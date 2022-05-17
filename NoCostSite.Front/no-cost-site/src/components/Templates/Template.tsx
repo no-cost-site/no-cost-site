@@ -56,7 +56,7 @@ export const Template = (): JSX.Element => {
     }, [templateId]);
 
     if (!template) {
-        return <Loader.Center/>;
+        return <Loader.Placeholder graph="square"/>;
     }
 
     return (
