@@ -36,9 +36,9 @@ export const FileUpload = (): JSX.Element => {
 
     const upload = async (data: number[]): Promise<void> => {
         await inLock(async () => {
-            await UploadApi.UpsertFile({Url: file!.Url, FileName: file!.Name, Data: data});
+            const response = await UploadApi.UpsertFile({Url: file!.Url, FileName: file!.Name, Data: data});
             await readAll({files: true});
-            navigate("/files");
+            navigate(`/files/file/${response.FileId}`);
         })
     }
 

@@ -1,11 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NoCostSite.Api.Dto;
-using NoCostSite.Api.Dto.Pages;
-using NoCostSite.Api.Dto.Templates;
 using NoCostSite.Api.Dto.Upload;
-using NoCostSite.BusinessLogic.Pages;
 using NoCostSite.BusinessLogic.Upload;
 using NoCostSite.Function;
 
@@ -21,18 +17,18 @@ namespace NoCostSite.Api.Controllers
             return ResultResponse.Ok();
         }
 
-        public async Task<ResultResponse> UpsertFile(UploadUpsertFileRequest request)
+        public async Task<UploadUpsertFileResponse> UpsertFile(UploadUpsertFileRequest request)
         {
             var data = request.Data.Select(x => (byte)x).ToArray();
-            await _uploadService.UpsertFile(request.Url, request.FileName, data);
-            return ResultResponse.Ok();
+            var fileId = await _uploadService.UpsertFile(request.Url, request.FileName, data);
+            return UploadUpsertFileResponse.Ok(fileId);
         }
 
-        public async Task<ResultResponse> UpsertFileContent(UploadUpsertFileContentRequest request)
+        public async Task<UploadUpsertFileResponse> UpsertFileContent(UploadUpsertFileContentRequest request)
         {
             var data = Encoding.Default.GetBytes(request.Content);
-            await _uploadService.UpsertFile(request.Url, request.FileName, data);
-            return ResultResponse.Ok();
+            var fileId = await _uploadService.UpsertFile(request.Url, request.FileName, data);
+            return UploadUpsertFileResponse.Ok(fileId);
         }
 
         public async Task<ResultResponse> UpsertTemplate(UploadUpsertTemplateRequest request)

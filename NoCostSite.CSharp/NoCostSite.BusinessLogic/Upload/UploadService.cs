@@ -26,7 +26,7 @@ namespace NoCostSite.BusinessLogic.Upload
             await client.Upsert(file);
         }
 
-        public async Task UpsertFile(string url, string fileName, byte[] data)
+        public async Task<string> UpsertFile(string url, string fileName, byte[] data)
         {
             var file = new ObjectStorageFile
             {
@@ -40,6 +40,8 @@ namespace NoCostSite.BusinessLogic.Upload
 
             using var client = _objectStorageClientFactory.Create(BucketName);
             await client.Upsert(file);
+
+            return file.Info.Id;
         }
 
         public async Task UpsertTemplate(Guid templateId)
