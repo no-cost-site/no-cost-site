@@ -25,7 +25,7 @@ export const FileCreate = (): JSX.Element => {
 
     const upload = async (): Promise<void> => {
         await Lock.in(async () => {
-            const response = await UploadApi.UpsertFileContent({Url: file!.Url, FileName: file!.Name, Content: file!.Content});
+            const response = await UploadApi.UpsertFileContent({Url: file.Url, FileName: file.Name, Content: file.Content});
             await readAll({files: true});
             navigate(`/files/file/${response.FileId}`);
         }, setLock)
