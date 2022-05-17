@@ -1,4 +1,4 @@
-export {Button} from "./Button";
+export {Button, Upload} from "./Button";
 export {Input, Password, TextArea, HtmlEditor} from "./Input";
 export {Form} from "./Form";
 export {Loader} from "./Loader";

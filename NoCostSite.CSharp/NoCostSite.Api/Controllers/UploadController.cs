@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using NoCostSite.Api.Dto;
 using NoCostSite.Api.Dto.Pages;
@@ -22,7 +23,8 @@ namespace NoCostSite.Api.Controllers
 
         public async Task<ResultResponse> UpsertFile(UploadUpsertFileRequest request)
         {
-            await _uploadService.UpsertFile(request.Url, request.FileName, request.Data);
+            var data = request.Data.Select(x => (byte)x).ToArray();
+            await _uploadService.UpsertFile(request.Url, request.FileName, data);
             return ResultResponse.Ok();
         }
 

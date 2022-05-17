@@ -6,6 +6,6 @@ namespace NoCostSite.Api.Dto.Upload
 
         public string FileName { get; set; } = null!;
 
-        public byte[] Data { get; set; } = null!;
+        public int[] Data { get; set; } = null!;
     }
 }
