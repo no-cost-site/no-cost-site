@@ -57,11 +57,11 @@ namespace NoCostSite.Api.Controllers
                 Content = "",
             };
 
+            await _usersService.Create(request.Password, request.PasswordConfirm);
             await _settingsService.Upsert(settings);
             await _templatesService.Upsert(template);
             await _pagesService.Upsert(page);
             await _uploadService.UpsertPage(page.Id);
-            await _usersService.Create(request.Password, request.PasswordConfirm);
             return ResultResponse.Ok();
         }
 

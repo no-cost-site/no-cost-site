@@ -20,10 +20,17 @@ export class ApiClientImpl {
             },
             body: data && JSON.stringify(data),
         });
-        if (!result.ok || result.status !== 200) {
-            throw new Error("Request error")
+
+        if (result.ok && result.status === 200) {
+            return await ApiClientImpl.getResult(result);
         }
-        return ApiClientImpl.getResult(result);
+
+        if (result.status === 400) {
+            const error = await ApiClientImpl.getResult(result) as any;
+            throw new Error(error.Error.Message)
+        }
+
+        throw new Error("Request error")
     }
 
     public getUrl(): string {
