@@ -44,6 +44,10 @@ namespace NoCostSite.BusinessLogic.Upload
             return file.Info.Id;
         }
 
+        public async Task UpsertZip(string url, byte[] zip)
+        {
+        }
+
         public async Task UpsertTemplate(Guid templateId)
         {
             var pages = await _pagesService.ReadAll();

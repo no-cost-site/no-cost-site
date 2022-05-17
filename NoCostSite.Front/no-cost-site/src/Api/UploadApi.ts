@@ -1,4 +1,4 @@
-import { UploadUpsertPageRequest, ResultResponse, UploadUpsertFileRequest, UploadUpsertFileResponse, UploadUpsertFileContentRequest, UploadUpsertTemplateRequest, UploadReadFileRequest, UploadReadFileResponse, UploadReadAllFilesResponse, UploadDeletePageRequest, UploadDeleteFileRequest } from "./dto"
+import { UploadUpsertPageRequest, ResultResponse, UploadUpsertFileRequest, UploadUpsertFileResponse, UploadUpsertZipRequest, UploadUpsertFileContentRequest, UploadUpsertTemplateRequest, UploadReadFileRequest, UploadReadFileResponse, UploadReadAllFilesResponse, UploadDeletePageRequest, UploadDeleteFileRequest } from "./dto"
 import { ApiClient } from "./ApiClient";
 
 export const UploadApi = {
@@ -15,6 +15,15 @@ export const UploadApi = {
         const apiUrl = ApiClient.Current!.getUrl();
         const controller = "Upload";
         const action = "UpsertFile";
+
+        const url = `${apiUrl}?Controller=${controller}&Action=${action}`;
+        return await ApiClient.Current!.send(url, request);
+    },
+
+    UpsertZip: async (request: UploadUpsertZipRequest): Promise<ResultResponse> => {
+        const apiUrl = ApiClient.Current!.getUrl();
+        const controller = "Upload";
+        const action = "UpsertZip";
 
         const url = `${apiUrl}?Controller=${controller}&Action=${action}`;
         return await ApiClient.Current!.send(url, request);

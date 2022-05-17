@@ -24,6 +24,13 @@ namespace NoCostSite.Api.Controllers
             return UploadUpsertFileResponse.Ok(fileId);
         }
 
+        public async Task<ResultResponse> UpsertZip(UploadUpsertZipRequest request)
+        {
+            var data = request.Data.Select(x => (byte)x).ToArray();
+            await _uploadService.UpsertZip(request.Url, data);
+            return ResultResponse.Ok();
+        }
+
         public async Task<UploadUpsertFileResponse> UpsertFileContent(UploadUpsertFileContentRequest request)
         {
             var data = Encoding.Default.GetBytes(request.Content);

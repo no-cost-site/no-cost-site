@@ -24,6 +24,7 @@ export { type TemplatesDeleteRequest } from "./TemplatesDeleteRequest";
 export { type UploadUpsertPageRequest } from "./UploadUpsertPageRequest";
 export { type UploadUpsertFileRequest } from "./UploadUpsertFileRequest";
 export { type UploadUpsertFileResponse } from "./UploadUpsertFileResponse";
+export { type UploadUpsertZipRequest } from "./UploadUpsertZipRequest";
 export { type UploadUpsertFileContentRequest } from "./UploadUpsertFileContentRequest";
 export { type UploadUpsertTemplateRequest } from "./UploadUpsertTemplateRequest";
 export { type UploadReadFileRequest } from "./UploadReadFileRequest";

@@ -16,7 +16,8 @@ import {
     File,
     FilesLeftMenu,
     FileUpload,
-    FileCreate
+    FileCreate,
+    FileUploadZip
 } from "./components";
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
                         <Route path="/files" element={<Body body={<Files/>} leftMenu={<FilesLeftMenu/>}/>}/>
                         <Route path="/files/create" element={<Body body={<FileCreate/>} leftMenu={<FilesLeftMenu/>}/>}/>
                         <Route path="/files/upload" element={<Body body={<FileUpload/>} leftMenu={<FilesLeftMenu/>}/>}/>
+                        <Route path="/files/upload/zip" element={<Body body={<FileUploadZip/>} leftMenu={<FilesLeftMenu/>}/>}/>
                         <Route path="/files/file/:fileId" element={<Body body={<File/>} leftMenu={<FilesLeftMenu/>}/>}/>
                     </Routes>
                 </HashRouter>

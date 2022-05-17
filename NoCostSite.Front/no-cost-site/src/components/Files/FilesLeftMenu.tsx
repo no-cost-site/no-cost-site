@@ -20,6 +20,10 @@ export const FilesLeftMenu = (): JSX.Element => {
         navigate("/files/upload");
     }
 
+    const onUploadZip = async () => {
+        navigate("/files/upload/zip");
+    }
+
     return (
         <LeftMenuUI>
             <LeftMenuUI.Header icon={IconType.Tree}>Files</LeftMenuUI.Header>
@@ -33,6 +37,7 @@ export const FilesLeftMenu = (): JSX.Element => {
             </LeftMenuUI.Tree>
             <LeftMenuUI.ItemMain onClick={onCreate} icon={IconType.Plus}>Create new</LeftMenuUI.ItemMain>
             <LeftMenuUI.ItemMain onClick={onUpload} icon={IconType.Import}>Upload file</LeftMenuUI.ItemMain>
+            <LeftMenuUI.ItemMain onClick={onUploadZip} icon={IconType.Attachment}>Upload zip archive</LeftMenuUI.ItemMain>
         </LeftMenuUI>
     )
 }
