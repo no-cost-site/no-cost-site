@@ -4,41 +4,62 @@ import {Loader} from "../../controls";
 import {Login} from "./Login";
 import {Register} from "./Register";
 
-enum State {
+export enum State {
     Check,
     Auth,
     NotInit,
     NotAuth,
 }
 
+interface IContext {
+    state: State;
+    updateState: (state: State) => void;
+}
+
+const defaultContext: IContext = {
+    state: State.Check,
+    updateState: (state: State) => {
+    },
+}
+
+export const AuthContext = React.createContext<IContext>({...defaultContext});
+
 export const Auth = (props: PropsWithChildren<{}>): JSX.Element => {
-    const [state, setState] = React.useState<State>(State.Check);
+    const [state, setState] = React.useState<IContext>(defaultContext);
+
+    const updateState = (state: State) => {
+        setState(x => ({...x, state}));
+
+        if(state === State.Check){
+            check();
+        }
+    }
 
     const check = async (): Promise<void> => {
         const responseIsInit = await AuthApi.IsInit();
         if (!responseIsInit.IsInit) {
-            setState(State.NotInit);
+            setState(x => ({...x, state: State.NotInit}));
             return;
         }
 
         const responseCheck = await AuthApi.Check();
         if (!responseCheck.IsSuccess) {
-            setState(State.NotAuth);
+            setState(x => ({...x, state: State.NotAuth}));
             return;
         }
 
-        setState(State.Auth);
+        setState(x => ({...x, state: State.Auth}));
     }
 
     const onLogin = () => {
-        setState(State.Auth);
+        updateState(State.Auth);
     }
 
     React.useEffect(() => {
         check();
     }, []);
 
-    switch (state) {
+    switch (state.state) {
         case State.Check:
             return <Loader.CenterBackdrop/>;
 
@@ -49,6 +70,10 @@ export const Auth = (props: PropsWithChildren<{}>): JSX.Element => {
             return <Login onLogin={onLogin}/>;
 
         default:
-            return <>{props.children}</>;
+            return (
+                <AuthContext.Provider value={{...state, updateState}}>
+                    {props.children}
+                </AuthContext.Provider>
+            )
     }
 }
