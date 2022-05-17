@@ -13,7 +13,7 @@ export const PagesLeftMenu = (): JSX.Element => {
     }
 
     const onCreate = async () => {
-        navigate("/pages/page/create");
+        navigate("/pages/create");
     }
 
     return (

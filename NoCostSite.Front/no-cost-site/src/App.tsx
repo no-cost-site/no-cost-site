@@ -7,6 +7,7 @@ import {
     AppContext,
     PagesLeftMenu,
     Page,
+    PageCreate,
     Templates,
     TemplatesLeftMenu,
     Template,
@@ -26,6 +27,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Navigate to="/pages"/>}/>
                         <Route path="/pages" element={<Body body={<Pages/>} leftMenu={<PagesLeftMenu/>}/>}/>
+                        <Route path="/pages/create" element={<Body body={<PageCreate/>} leftMenu={<PagesLeftMenu/>}/>}/>
                         <Route path="/pages/page/:pageId" element={<Body body={<Page/>} leftMenu={<PagesLeftMenu/>}/>}/>
                         <Route path="/templates" element={<Body body={<Templates/>} leftMenu={<TemplatesLeftMenu/>}/>}/>
                         <Route path="/templates/create" element={<Body body={<TemplateCreate/>} leftMenu={<TemplatesLeftMenu/>}/>}/>
