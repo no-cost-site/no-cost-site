@@ -5,6 +5,7 @@ import {PagesApi, UploadApi} from "../../Api";
 import {Button, Form, Input, Loader, HtmlEditor, Select} from "../../controls";
 import {Context} from "../Context/AppContext";
 import {Lock} from "../../utils";
+import {Config} from "../../Config";
 
 const pageStyles = {
     maxWidth: "100%",
@@ -48,7 +49,7 @@ export const Page = (): JSX.Element => {
     }
 
     const open = () => {
-        window.open(`http://no-cost-site.olrix.net.website.yandexcloud.net/${page!.Url}`);
+        window.open(`${Config.siteUrl}/${page!.Url}`);
     }
 
     const deletePage = async (): Promise<void> => {

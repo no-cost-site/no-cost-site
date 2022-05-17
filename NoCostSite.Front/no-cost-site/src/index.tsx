@@ -6,8 +6,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {ApiClient} from "./Api";
 import {ApiClientImpl} from "./utils";
+import {Config} from "./Config";
 
-ApiClient.Current = new ApiClientImpl("https://functions.yandexcloud.net/d4e28654q6ombfhfr8nl");
+ApiClient.Current = new ApiClientImpl(Config.apiUrl);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

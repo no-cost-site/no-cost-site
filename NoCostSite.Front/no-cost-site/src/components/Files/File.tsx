@@ -5,6 +5,7 @@ import {UploadApi} from "../../Api";
 import {Button, Form, Input, Loader, HtmlEditor, Upload} from "../../controls";
 import {Context} from "../Context/AppContext";
 import {Lock} from "../../utils";
+import {Config} from "../../Config";
 
 const pageStyles = {
     maxWidth: "100%",
@@ -54,7 +55,7 @@ export const File = (): JSX.Element => {
 
     const open = () => {
         const url = file!.Url ? `/${file!.Url}` : "";
-        window.open(`http://no-cost-site.olrix.net.website.yandexcloud.net${url}/${file!.Name}`);
+        window.open(`${Config.siteUrl}${url}/${file!.Name}`);
     }
 
     const deleteFile = async (): Promise<void> => {
