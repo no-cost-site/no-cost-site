@@ -29,6 +29,24 @@ namespace NoCostSite.BusinessLogic.Upload
 
         public async Task<string> UpsertFile(string url, string fileName, byte[] data)
         {
+            var file = new ObjectStorageFileData
+            {
+                Info = new ObjectStorageFileInfo
+                {
+                    Directory = new ObjectStorageDirectory(url),
+                    Name = fileName,
+                },
+                Data = data,
+            };
+
+            using var client = _objectStorageClientFactory.Create(BucketName);
+            await client.Upsert(file);
+
+            return file.Info.Id;
+        }
+        
+        public async Task<string> UpsertFile(string url, string fileName, string content)
+        {
             var file = new ObjectStorageFile
             {
                 Info = new ObjectStorageFileInfo
@@ -36,7 +54,7 @@ namespace NoCostSite.BusinessLogic.Upload
                     Directory = new ObjectStorageDirectory(url),
                     Name = fileName,
                 },
-                Content = Encoding.Default.GetString(data),
+                Content = content,
             };
 
             using var client = _objectStorageClientFactory.Create(BucketName);

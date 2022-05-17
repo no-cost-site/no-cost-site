@@ -33,8 +33,7 @@ namespace NoCostSite.Api.Controllers
 
         public async Task<UploadUpsertFileResponse> UpsertFileContent(UploadUpsertFileContentRequest request)
         {
-            var data = Encoding.Default.GetBytes(request.Content);
-            var fileId = await _uploadService.UpsertFile(request.Url, request.FileName, data);
+            var fileId = await _uploadService.UpsertFile(request.Url, request.FileName, request.Content);
             return UploadUpsertFileResponse.Ok(fileId);
         }
 

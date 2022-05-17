@@ -20,8 +20,16 @@ namespace NoCostSite.BusinessLogic.ObjectStorage
 
         public async Task Upsert(ObjectStorageFile file)
         {
-            var data = Encoding.Default.GetBytes(file.Content);
-            await using var stream = new MemoryStream(data);
+            await Upsert(new ObjectStorageFileData
+            {
+                Info = file.Info,
+                Data = Encoding.Default.GetBytes(file.Content)
+            });
+        }
+
+        public async Task Upsert(ObjectStorageFileData file)
+        {
+            await using var stream = new MemoryStream(file.Data);
 
             var request = new PutObjectRequest
             {
@@ -34,6 +42,12 @@ namespace NoCostSite.BusinessLogic.ObjectStorage
         }
 
         public async Task UpsertMany(ObjectStorageFile[] files)
+        {
+            var tasks = files.Select(Upsert);
+            await Task.WhenAll(tasks);
+        }
+
+        public async Task UpsertMany(ObjectStorageFileData[] files)
         {
             var tasks = files.Select(Upsert);
             await Task.WhenAll(tasks);

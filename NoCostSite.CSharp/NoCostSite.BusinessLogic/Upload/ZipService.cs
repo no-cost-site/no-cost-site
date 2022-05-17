@@ -1,14 +1,13 @@
 ﻿using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using NoCostSite.BusinessLogic.ObjectStorage;
 
 namespace NoCostSite.BusinessLogic.Upload
 {
     public class ZipService
     {
-        public ObjectStorageFile[] UnZip(byte[] zip, ObjectStorageDirectory directory)
+        public ObjectStorageFileData[] UnZip(byte[] zip, ObjectStorageDirectory directory)
         {
             using var stream = new MemoryStream(zip);
             using var archive = new ZipArchive(stream);
@@ -19,7 +18,7 @@ namespace NoCostSite.BusinessLogic.Upload
                 .ToArray();
         }
 
-        private ObjectStorageFile UnZip(ObjectStorageDirectory directory, ZipArchiveEntry entry)
+        private ObjectStorageFileData UnZip(ObjectStorageDirectory directory, ZipArchiveEntry entry)
         {
             var fileInfo = ObjectStorageFileInfo.Parse(entry.FullName);
             fileInfo.Directory = directory.Append(fileInfo.Directory);
@@ -29,10 +28,10 @@ namespace NoCostSite.BusinessLogic.Upload
 
             entryStream.CopyTo(fileStream);
 
-            return new ObjectStorageFile
+            return new ObjectStorageFileData
             {
                 Info = fileInfo,
-                Content = Encoding.Default.GetString(fileStream.ToArray()),
+                Data = fileStream.ToArray(),
             };
         }
     }
