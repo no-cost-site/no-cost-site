@@ -23,7 +23,7 @@ namespace NoCostSite.BusinessLogic.ObjectStorage
         
         public static ObjectStorageFileInfo Parse(string path)
         {
-            var arr = path.Split('/');
+            var arr = path.Replace("\\", "//").Split('/');
 
             if (!arr.Any())
             {

@@ -14,6 +14,7 @@ namespace NoCostSite.BusinessLogic.Upload
         private readonly ObjectStorageClientFactory _objectStorageClientFactory = new ObjectStorageClientFactory();
         private readonly PagesService _pagesService = new PagesService();
         private readonly TemplatesService _templatesService = new TemplatesService();
+        private readonly ZipService _zipService = new ZipService();
 
         public async Task UpsertPage(Guid pageId)
         {
@@ -46,6 +47,11 @@ namespace NoCostSite.BusinessLogic.Upload
 
         public async Task UpsertZip(string url, byte[] zip)
         {
+            var directory = new ObjectStorageDirectory(url);
+            var files = _zipService.UnZip(zip, directory);
+            
+            using var client = _objectStorageClientFactory.Create(BucketName);
+            await client.UpsertMany(files);
         }
 
         public async Task UpsertTemplate(Guid templateId)
