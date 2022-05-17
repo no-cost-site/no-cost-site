@@ -53,7 +53,7 @@ export const PageCreate = (): JSX.Element => {
 
     return (
         <>
-            <h1>{page.Name}</h1>
+            <h1>Create page</h1>
             <Form style={pageStyles}>
                 <Form.Input text="Name">
                     <Input name="Name" value={page.Name} onChange={onChangeState}/>

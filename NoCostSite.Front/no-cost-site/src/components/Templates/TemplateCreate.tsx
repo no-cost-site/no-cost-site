@@ -37,7 +37,7 @@ export const TemplateCreate = (): JSX.Element => {
 
     return (
         <>
-            <h1>{template.Name}</h1>
+            <h1>Create template</h1>
             <Form style={pageStyles}>
                 <Form.Input text="Name">
                     <Input name="Name" value={template.Name} onChange={onChangeState}/>

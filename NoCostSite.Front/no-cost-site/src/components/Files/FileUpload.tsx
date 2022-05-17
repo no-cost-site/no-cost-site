@@ -37,7 +37,7 @@ export const FileUpload = (): JSX.Element => {
 
     return (
         <>
-            <h1>{file.Name}</h1>
+            <h1>Upload file</h1>
             <Form style={pageStyles}>
                 <Form.Input text="Name">
                     <Input name="Name" value={file.Name} onChange={onChangeState}/>
