@@ -1,6 +1,6 @@
 import React from "react";
 import {AuthApi} from "../../Api";
-import {Button, Form, Password} from "../../controls";
+import {Button, Form, Password, Select} from "../../controls";
 import {TokenContainer, Lock} from "../../utils";
 
 interface Props {
@@ -10,10 +10,11 @@ interface Props {
 interface State {
     password: string,
     passwordConfirm: string,
+    language: string,
 }
 
 export const Register = (props: Props): JSX.Element => {
-    const [state, setState] = React.useState<State>({password: "", passwordConfirm: ""});
+    const [state, setState] = React.useState<State>({password: "", passwordConfirm: "", language: "en"});
     const [lock, setLock] = React.useState<boolean>(false);
 
     const onChangeState = (value: string, name?: string) => {
@@ -24,7 +25,7 @@ export const Register = (props: Props): JSX.Element => {
         await Lock.in(async () => {
             await AuthApi.Register({
                 Settings: {
-                    Language: "en",
+                    Language: state.language,
                 },
                 Password: state.password,
                 PasswordConfirm: state.passwordConfirm,
@@ -40,6 +41,11 @@ export const Register = (props: Props): JSX.Element => {
         }, setLock)
     }
 
+    const languages = [
+        {text: "English", value: "en"},
+        {text: "Русский", value: "ru"},
+    ]
+
     return (
         <Form center vertical border>
             <Form.Header>Sign up</Form.Header>
@@ -48,6 +54,9 @@ export const Register = (props: Props): JSX.Element => {
             </Form.Input>
             <Form.Input text="Confirm password">
                 <Password name="passwordConfirm" value={state.passwordConfirm} onChange={onChangeState}/>
+            </Form.Input>
+            <Form.Input text="Language">
+                <Select name="language" value={state.language} values={languages} onChange={onChangeState}/>
             </Form.Input>
             <Form.Buttons>
                 <Button name="register" text="Sing up" loading={lock} onClick={register}/>

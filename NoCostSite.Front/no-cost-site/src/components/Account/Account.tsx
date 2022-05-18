@@ -3,6 +3,6 @@ import React from "react";
 
 export const Account = (): JSX.Element => {
     return (
-        <Navigate to="/account/changePassword"/>
+        <Navigate to="/account/settings"/>
     )
 }

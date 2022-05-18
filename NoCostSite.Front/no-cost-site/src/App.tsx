@@ -21,7 +21,8 @@ import {
     ChangePassword,
     AccountLeftMenu,
     Account,
-    SignOut
+    SignOut,
+    Settings
 } from "./components";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Navigate to="/pages"/>}/>
                         <Route path="/account" element={<Body body={<Account/>} leftMenu={<AccountLeftMenu/>}/>}/>
+                        <Route path="/account/settings" element={<Body body={<Settings/>} leftMenu={<AccountLeftMenu/>}/>}/>
                         <Route path="/account/changePassword" element={<Body body={<ChangePassword/>} leftMenu={<AccountLeftMenu/>}/>}/>
                         <Route path="/account/signOut" element={<Body body={<SignOut/>} leftMenu={<AccountLeftMenu/>}/>}/>
                         <Route path="/pages" element={<Body body={<Pages/>} leftMenu={<PagesLeftMenu/>}/>}/>

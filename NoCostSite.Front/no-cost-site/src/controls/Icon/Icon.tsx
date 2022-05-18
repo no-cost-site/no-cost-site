@@ -22,6 +22,7 @@ import {
     Attachment,
     Admin,
     Exit,
+    Gear,
 } from "@rsuite/icons";
 import {HtmlProps} from "../../utils";
 
@@ -48,6 +49,7 @@ export enum IconType {
     Attachment,
     Admin,
     Exit,
+    Gear,
 }
 
 interface IconProps {
@@ -104,6 +106,8 @@ export const Icon = (props: IconProps & HtmlProps) => {
             return <Admin {...props}/>;
         case IconType.Exit:
             return <Exit {...props}/>;
+        case IconType.Gear:
+            return <Gear {...props}/>;
         default:
             throw new Error(`Icon ${props.type} not found`);
     }

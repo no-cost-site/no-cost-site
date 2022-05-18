@@ -1,12 +1,13 @@
 import React, {PropsWithChildren} from 'react';
-import {DirectoryDto, FileItemDto, PageItemDto, TemplateItemDto} from "../../Api/dto";
-import {PagesApi, TemplatesApi, UploadApi} from "../../Api";
+import {DirectoryDto, FileItemDto, PageItemDto, SettingsDto, TemplateItemDto} from "../../Api/dto";
+import {PagesApi, SettingsApi, TemplatesApi, UploadApi} from "../../Api";
 import {Loader} from '../../controls';
 
 interface IContextReadAll {
     pages?: boolean;
     templates?: boolean;
     files?: boolean;
+    settings?: boolean;
 }
 
 interface IContext {
@@ -15,6 +16,7 @@ interface IContext {
     templates: TemplateItemDto[];
     files: FileItemDto[];
     filesDirectory: DirectoryDto;
+    settings: SettingsDto;
     readAll: (update?: IContextReadAll) => Promise<void>;
 }
 
@@ -24,6 +26,7 @@ const defaultContext: IContext = {
     templates: [],
     files: [],
     filesDirectory: {} as any,
+    settings: {} as any,
     readAll: async () => {
     },
 }
@@ -48,6 +51,11 @@ export const AppContext = (props: PropsWithChildren<{}>): JSX.Element => {
         if (!update || !!update.files) {
             const resultFiles = await UploadApi.ReadAllFiles();
             setState(x => ({...x, files: resultFiles.Files, filesDirectory: resultFiles.Directory}));
+        }
+
+        if (!update || !!update.settings) {
+            const resultSettings = await SettingsApi.Read();
+            setState(x => ({...x, settings: resultSettings.Settings}));
         }
     }
 
