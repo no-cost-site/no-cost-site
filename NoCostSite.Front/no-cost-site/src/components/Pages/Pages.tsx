@@ -5,7 +5,9 @@ import {Context} from "../Context/AppContext";
 export const Pages = (): JSX.Element => {
     const {pages} = React.useContext(Context);
 
+    const url = pages.length ? `/pages/page/${pages[0].Id}` : "/pages/create";
+
     return (
-        <Navigate to={`/pages/page/${pages[0].Id}`}/>
+        <Navigate to={url}/>
     )
 }

@@ -25,7 +25,7 @@ export const PageCreate = (): JSX.Element => {
     const navigate = useNavigate();
 
     const {templates, readAll} = React.useContext(Context);
-    const [page, setPage] = useState<PageDto>({...newPage, Id: Guid.new(), TemplateId: templates[0].Id});
+    const [page, setPage] = useState<PageDto>({...newPage, Id: Guid.new(), TemplateId: templates[0]?.Id});
     const [lock, setLock] = React.useState<boolean>(false);
 
     const saveAdnPublish = async (): Promise<void> => {
