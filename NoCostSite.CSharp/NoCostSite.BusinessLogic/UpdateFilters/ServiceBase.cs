@@ -7,16 +7,24 @@ namespace NoCostSite.BusinessLogic.UpdateFilters
     {
        protected async Task Upsert(T item, Func<T, Task> action)
         {
-            await UpdateFilters.BeforeUpsert(item);
+            await Execute(x => x.BeforeUpsert(item));
             await action(item);
-            await UpdateFilters.AfterUpsert(item);
+            await Execute(x => x.AfterUpsert(item));
         }
         
         protected async Task Delete(T item, Func<T, Task> action)
         {
-            await UpdateFilters.BeforeDelete(item);
+            await Execute(x => x.BeforeDelete(item));
             await action(item);
-            await UpdateFilters.AfterDelete(item);
+            await Execute(x => x.AfterDelete(item));
+        }
+
+        private async Task Execute(Func<IUpdateFilter<T>, Task> action)
+        {
+            foreach (var filter in UpdateFiltersFactory.CreateFilters<T>())
+            {
+                await action(filter);
+            }
         }
     }
 }

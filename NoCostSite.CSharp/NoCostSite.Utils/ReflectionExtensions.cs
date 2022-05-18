@@ -18,6 +18,16 @@ namespace NoCostSite.Utils
             return types.SelectMany(TypesProvider.GetAll);
         }
 
+        public static bool HasInterface(this Type type, Type interfaceType)
+        {
+            return interfaceType.GetInterfaces().Contains(type);
+        }
+
+        public static T CreateInstance<T>(this Type type, params object[] objects)
+        {
+            return (T)Activator.CreateInstance(type, objects);
+        }
+
         private static class TypesProvider
         {
             private static readonly ConcurrentDictionary<Assembly, Type[]> Types =
