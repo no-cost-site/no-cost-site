@@ -23,6 +23,11 @@ namespace NoCostSite.BusinessLogic.Pages
             return await _repository.ReadAll();
         }
 
+        public async Task<int> Count()
+        {
+            return (await ReadAll()).Length;
+        }
+
         public async Task Delete(Guid id)
         {
             var page = await Read(id);
