@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
+using NoCostSite.BusinessLogic.UpdateFilters;
 
 namespace NoCostSite.BusinessLogic.Pages
 {
-    public class PagesService
+    public class PagesService : ServiceBase<Page>
     {
         private readonly PagesRepository _repository = new PagesRepository();
         
         public async Task Upsert(Page page)
         {
-            Patch(page);
-            await _repository.Upsert(page);
+            await Upsert(page, x => _repository.Upsert(x));
         }
 
         public async Task<Page> Read(Guid id)
@@ -25,15 +25,8 @@ namespace NoCostSite.BusinessLogic.Pages
 
         public async Task Delete(Guid id)
         {
-            await _repository.Delete(id);
-        }
-
-        private void Patch(Page page)
-        {
-            if (page.Id == Guid.Empty)
-            {
-                page.Id = Guid.NewGuid();
-            }
+            var page = await Read(id);
+            await Delete(page, _ => _repository.Delete(id));
         }
     }
 }

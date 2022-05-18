@@ -1,26 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
-using NoCostSite.BusinessLogic.Pages;
-using NoCostSite.BusinessLogic.Upload;
-using NoCostSite.Utils;
+using NoCostSite.BusinessLogic.UpdateFilters;
 
 namespace NoCostSite.BusinessLogic.Templates
 {
-    public class TemplatesService
+    public class TemplatesService : ServiceBase<Template>
     {
         private readonly TemplatesRepository _repository = new TemplatesRepository();
-        
+
         public async Task Upsert(Template template)
         {
-            Validate();
-
-            Patch(template);
-            await _repository.Upsert(template);
-
-            void Validate()
-            {
-                Assert.Validate(() => template.Content.Contains(nameof(Page.Content).AsTag()), $"Template must contain tag {nameof(Page.Content).AsTag()}");
-            }
+            await Upsert(template, x => _repository.Upsert(x));
         }
 
         public async Task<Template> Read(Guid id)
@@ -35,15 +25,8 @@ namespace NoCostSite.BusinessLogic.Templates
 
         public async Task Delete(Guid id)
         {
-            await _repository.Delete(id);
-        }
-
-        private void Patch(Template template)
-        {
-            if (template.Id == Guid.Empty)
-            {
-                template.Id = Guid.NewGuid();
-            }
+            var template = await Read(id);
+            await Delete(template, _ => _repository.Delete(id));
         }
     }
 }

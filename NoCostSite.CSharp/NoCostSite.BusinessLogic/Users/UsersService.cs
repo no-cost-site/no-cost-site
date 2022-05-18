@@ -3,14 +3,15 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using NoCostSite.BusinessLogic.Config;
+using NoCostSite.BusinessLogic.UpdateFilters;
 using NoCostSite.Utils;
 
 namespace NoCostSite.BusinessLogic.Users
 {
-    public class UsersService
+    public class UsersService : ServiceBase<User>
     {
         private readonly UsersRepository _repository = new UsersRepository();
-        
+
         public async Task Create(string? password, string? passwordConfirm)
         {
             await Validate();
@@ -20,8 +21,8 @@ namespace NoCostSite.BusinessLogic.Users
                 Password = HashPassword(password!)
             };
 
-            await _repository.Upsert(user);
-            
+            await Upsert(user, x => _repository.Upsert(x));
+
             async Task Validate()
             {
                 Assert.Validate(() => !string.IsNullOrWhiteSpace(password), "Password should be not empty");
@@ -33,7 +34,7 @@ namespace NoCostSite.BusinessLogic.Users
                 Assert.Validate(() => existsUser == null, "User already exists");
             }
         }
-        
+
         public async Task ChangePassword(string? oldPassword, string? newPassword, string? passwordConfirm)
         {
             await Validate();
@@ -43,8 +44,8 @@ namespace NoCostSite.BusinessLogic.Users
                 Password = HashPassword(newPassword!)
             };
 
-            await _repository.Upsert(user);
-            
+            await Upsert(user, x => _repository.Upsert(x));
+
             async Task Validate()
             {
                 Assert.Validate(() => !string.IsNullOrWhiteSpace(oldPassword), "Password should be not empty");
