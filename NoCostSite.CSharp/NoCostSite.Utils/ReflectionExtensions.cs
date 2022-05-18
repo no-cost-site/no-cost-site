@@ -20,12 +20,12 @@ namespace NoCostSite.Utils
 
         public static bool HasInterface(this Type type, Type interfaceType)
         {
-            return interfaceType.GetInterfaces().Contains(type);
+            return type.GetInterfaces().Contains(interfaceType);
         }
 
         public static T CreateInstance<T>(this Type type, params object[] objects)
         {
-            return (T)Activator.CreateInstance(type, objects);
+            return (T) Activator.CreateInstance(type, objects);
         }
 
         private static class TypesProvider

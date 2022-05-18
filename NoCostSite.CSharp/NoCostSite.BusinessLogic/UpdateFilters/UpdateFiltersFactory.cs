@@ -8,7 +8,7 @@ namespace NoCostSite.BusinessLogic.UpdateFilters
         public static IUpdateFilter<T>[] CreateFilters<T>()
         {
             var type = typeof(IUpdateFilter<>).MakeGenericType(typeof(T));
-            return type
+            return typeof(T)
                 .GetAllTypes()
                 .Where(x => x.HasInterface(type))
                 .Select(x => x.CreateInstance<IUpdateFilter<T>>())
