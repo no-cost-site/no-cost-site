@@ -10,9 +10,10 @@ namespace NoCostSite.BusinessLogic.Templates.Filters
     {
         public override Task BeforeUpsert(Template item) => Validate(item);
         
-        private Task Validate(Template item)
+        private Task Validate(Template template)
         {
-            Assert.Validate(() => item.Content.Contains(nameof(Page.Content).AsTag()), $"Template must contain tag {nameof(Page.Content).AsTag()}");
+            Assert.Validate(() => !string.IsNullOrEmpty(template.Name), "Name should be not empty");
+            Assert.Validate(() => template.Content.Contains(nameof(Page.Content).AsTag()), $"Template must contain tag {nameof(Page.Content).AsTag()}");
             
             return Task.CompletedTask;
         }
