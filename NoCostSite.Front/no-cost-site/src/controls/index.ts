@@ -8,3 +8,4 @@ export {LeftMenu, LeftNavbar} from "./LeftMenu";
 export {TopMenu} from "./TopMenu";
 export {IconType, Icon} from "./Icon";
 export {Select} from "./Select";
+export {Confirm, ConfirmDelete} from "./Modal";

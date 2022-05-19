@@ -2,7 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import React, {useState} from "react";
 import {FileDto} from "../../Api/dto";
 import {UploadApi} from "../../Api";
-import {Button, Form, Input, Loader, HtmlEditor, Upload} from "../../controls";
+import {Button, Form, Input, Loader, HtmlEditor, Upload, ConfirmDelete} from "../../controls";
 import {Context} from "../Context/AppContext";
 import {Lock} from "../../utils";
 import {Config} from "../../Config";
@@ -19,6 +19,7 @@ export const File = (): JSX.Element => {
     const [file, setFile] = useState<FileDto | null>(null);
     const [currentFile, setCurrentFile] = useState<FileDto | null>(null);
     const [lock, setLock] = React.useState<boolean>(false);
+    const [confirmDelete, setConfirmDelete] = React.useState<boolean>(false);
 
     const read = async (): Promise<void> => {
         const fileItem = files.filter(x => x.Id === fileId)[0];
@@ -58,6 +59,14 @@ export const File = (): JSX.Element => {
         window.open(`${Config.siteUrl}${url}/${file!.Name}`);
     }
 
+    const confirmDeleteFile = async (): Promise<void> => {
+        setConfirmDelete(true);
+    }
+
+    const unConfirmDeleteFile = async (): Promise<void> => {
+        setConfirmDelete(false);
+    }
+
     const deleteFile = async (): Promise<void> => {
         await Lock.in(async () => {
             await UploadApi.DeleteFile({Url: file!.Url, FileName: file!.Name});
@@ -95,10 +104,11 @@ export const File = (): JSX.Element => {
                 <Form.Buttons>
                     <Button name="upload" text="Save" loading={lock} onClick={upload}/>
                     <Upload name="upload-file" text="Upload file" loading={lock} onUpload={uploadFile}/>
-                    <Button name="delete" text="Delete" type="subtle" loading={lock} onClick={deleteFile}/>
                     <Button name="open" text="Open on site" type="link" onClick={open}/>
+                    <Button name="delete" text="Delete" type="subtle" loading={lock} onClick={confirmDeleteFile}/>
                 </Form.Buttons>
             </Form>
+            <ConfirmDelete open={confirmDelete} onOk={deleteFile} onCancel={unConfirmDeleteFile}/>
         </>
     )
 }

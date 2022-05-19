@@ -2,7 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import React, {useState} from "react";
 import {PageDto} from "../../Api/dto";
 import {PagesApi, UploadApi} from "../../Api";
-import {Button, Form, Input, Loader, HtmlEditor, Select} from "../../controls";
+import {Button, Form, Input, Loader, HtmlEditor, Select, ConfirmDelete} from "../../controls";
 import {Context} from "../Context/AppContext";
 import {Lock} from "../../utils";
 import {Config} from "../../Config";
@@ -19,6 +19,7 @@ export const Page = (): JSX.Element => {
     const [page, setPage] = useState<PageDto | null>(null);
     const [currentPage, setCurrentPage] = useState<PageDto | null>(null);
     const [lock, setLock] = React.useState<boolean>(false);
+    const [confirmDelete, setConfirmDelete] = React.useState<boolean>(false);
 
     const read = async (): Promise<void> => {
         const response = await PagesApi.Read({Id: pageId!});
@@ -50,6 +51,14 @@ export const Page = (): JSX.Element => {
 
     const open = () => {
         window.open(`${Config.siteUrl}/${page!.Url}`);
+    }
+
+    const confirmDeletePage = async (): Promise<void> => {
+        setConfirmDelete(true);
+    }
+
+    const unConfirmDeletePage = async (): Promise<void> => {
+        setConfirmDelete(false);
     }
 
     const deletePage = async (): Promise<void> => {
@@ -105,8 +114,9 @@ export const Page = (): JSX.Element => {
                     <Button name="save-and-publish" text="Save and publish" loading={lock} onClick={saveAdnPublish}/>
                     <Button name="save" text="Save draft" type="default" loading={lock} onClick={save}/>
                     <Button name="open" text="Open on site" type="link" loading={lock} onClick={open}/>
-                    <Button name="delete" text="Delete" type="subtle" loading={lock} onClick={deletePage}/>
+                    <Button name="delete" text="Delete" type="subtle" loading={lock} onClick={confirmDeletePage}/>
                 </Form.Buttons>
+                <ConfirmDelete open={confirmDelete} onOk={deletePage} onCancel={unConfirmDeletePage}/>
             </Form>
         </>
     )

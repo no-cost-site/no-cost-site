@@ -2,7 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import React, {useState} from "react";
 import {TemplateDto} from "../../Api/dto";
 import {TemplatesApi, UploadApi} from "../../Api";
-import {Button, Form, Input, Loader, HtmlEditor} from "../../controls";
+import {Button, Form, Input, Loader, HtmlEditor, ConfirmDelete} from "../../controls";
 import {Context} from "../Context/AppContext";
 import {Lock} from "../../utils";
 
@@ -17,6 +17,7 @@ export const Template = (): JSX.Element => {
     const {readAll} = React.useContext(Context);
     const [template, setTemplate] = useState<TemplateDto | null>(null);
     const [lock, setLock] = React.useState<boolean>(false);
+    const [confirmDelete, setConfirmDelete] = React.useState<boolean>(false);
 
     const read = async (): Promise<void> => {
         const response = await TemplatesApi.Read({Id: templateId!});
@@ -36,6 +37,14 @@ export const Template = (): JSX.Element => {
             await TemplatesApi.Upsert({Template: template!});
             await readAll({templates: true});
         }, setLock)
+    }
+
+    const confirmDeleteTemplate = async (): Promise<void> => {
+        setConfirmDelete(true);
+    }
+
+    const unConfirmDeleteTemplate = async (): Promise<void> => {
+        setConfirmDelete(false);
     }
 
     const deleteTemplate = async (): Promise<void> => {
@@ -75,9 +84,10 @@ export const Template = (): JSX.Element => {
                 <Form.Buttons>
                     <Button name="save-and-publish" text="Save and publish" loading={lock} onClick={saveAdnPublish}/>
                     <Button name="save" text="Save draft" type="default" loading={lock} onClick={save}/>
-                    <Button name="delete" text="Delete" type="subtle" loading={lock} onClick={deleteTemplate}/>
+                    <Button name="delete" text="Delete" type="subtle" loading={lock} onClick={confirmDeleteTemplate}/>
                 </Form.Buttons>
             </Form>
+            <ConfirmDelete open={confirmDelete} onOk={deleteTemplate} onCancel={unConfirmDeleteTemplate}/>
         </>
     )
 }
