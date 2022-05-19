@@ -1,5 +1,11 @@
 import React, {PropsWithChildren} from 'react';
-import {DirectoryDto, FileItemDto, PageItemDto, SettingsDto, TemplateItemDto} from "../../Api/dto";
+import {
+    DirectoryDto,
+    FileItemDto,
+    PageItemDto,
+    SettingsDto,
+    TemplateItemDto
+} from "../../Api/dto";
 import {PagesApi, SettingsApi, TemplatesApi, UploadApi} from "../../Api";
 import {Loader} from '../../controls';
 
@@ -38,25 +44,43 @@ export const AppContext = (props: PropsWithChildren<{}>): JSX.Element => {
     const [init, setInit] = React.useState<boolean>(false);
 
     const readAll = async (update?: IContextReadAll): Promise<void> => {
+        const [resultPages, resultTemplates, resultFiles, resultSettings] = await Promise.all([
+            readPages(update), readTemplates(update), readFiles(update), readSettings(update)
+        ]);
+
+        setState(x => ({...x, ...resultPages, ...resultTemplates, ...resultFiles, ...resultSettings}));
+    }
+
+    const readPages = async (update?: IContextReadAll): Promise<{ pages: PageItemDto[], pagesDirectory: DirectoryDto } | {}> => {
         if (!update || !!update.pages) {
-            const resultPages = await PagesApi.ReadAll();
-            setState(x => ({...x, pages: resultPages.Items, pagesDirectory: resultPages.Directory}));
+            const result = await PagesApi.ReadAll();
+            return {pages: result.Items, pagesDirectory: result.Directory,}
         }
+        return {};
+    }
 
+    const readTemplates = async (update?: IContextReadAll): Promise<{ templates: TemplateItemDto[] } | {}> => {
         if (!update || !!update.templates) {
-            const resultTemplates = await TemplatesApi.ReadAll();
-            setState(x => ({...x, templates: resultTemplates.Items}));
+            const result = await TemplatesApi.ReadAll();
+            return {templates: result.Items};
         }
+        return {};
+    }
 
+    const readFiles = async (update?: IContextReadAll): Promise<{files: FileItemDto[], filesDirectory: DirectoryDto} | {}> => {
         if (!update || !!update.files) {
-            const resultFiles = await UploadApi.ReadAllFiles();
-            setState(x => ({...x, files: resultFiles.Files, filesDirectory: resultFiles.Directory}));
+            const result = await UploadApi.ReadAllFiles();
+            return {files: result.Files, filesDirectory: result.Directory};
         }
+        return {};
+    }
 
+    const readSettings = async (update?: IContextReadAll): Promise<{settings: SettingsDto} | {}> => {
         if (!update || !!update.settings) {
-            const resultSettings = await SettingsApi.Read();
-            setState(x => ({...x, settings: resultSettings.Settings}));
+            const result = await SettingsApi.Read();
+            return {settings: result.Settings};
         }
+        return {};
     }
 
     React.useEffect(() => {
